@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ContentFilters</key>
+	<dict/>
+	<key>auto_connect</key>
+	<true/>
+	<key>data</key>
+	<dict>
+		<key>connection</key>
+		<dict>
+			<key>host</key>
+			<string>127.0.0.1</string>
+			<key>name</key>
+			<string>root@127.0.0.1</string>
+			<key>rdbms_type</key>
+			<string>mysql</string>
+			<key>sslCACertFileLocation</key>
+			<string></string>
+			<key>sslCACertFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslCertificateFileLocation</key>
+			<string></string>
+			<key>sslCertificateFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslKeyFileLocation</key>
+			<string></string>
+			<key>sslKeyFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>type</key>
+			<string>SPTCPIPConnection</string>
+			<key>useSSL</key>
+			<integer>0</integer>
+			<key>user</key>
+			<string>root</string>
+		</dict>
+		<key>session</key>
+		<dict>
+			<key>connectionEncoding</key>
+			<string>utf8</string>
+			<key>contentFilterV2</key>
+			<dict>
+				<key>children</key>
+				<array/>
+				<key>filterClass</key>
+				<string>groupNode</string>
+				<key>isConjunction</key>
+				<true/>
+			</dict>
+			<key>contentPageNumber</key>
+			<integer>1</integer>
+			<key>contentSelection</key>
+			<data>
+			YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0
+			b3BYJG9iamVjdHMSAAGGoF8QD05TS2V5ZWRBcmNoaXZlctEICVRk
+			YXRhgAGoCwwXGBkaHiVVJG51bGzTDQ4PEBMWV05TLmtleXNaTlMu
+			b2JqZWN0c1YkY2xhc3OiERKAAoADohQVgASABYAHVHR5cGVUcm93
+			c18QHVNlbGVjdGlvbkRldGFpbFR5cGVOU0luZGV4U2V00hsPHB1c
+			TlNSYW5nZUNvdW50EACABtIfICEiWiRjbGFzc25hbWVYJGNsYXNz
+			ZXNaTlNJbmRleFNldKIjJFpOU0luZGV4U2V0WE5TT2JqZWN00h8g
+			JidcTlNEaWN0aW9uYXJ5oiYkAAgAEQAaACQAKQAyADcASQBMAFEA
+			UwBcAGIAaQBxAHwAgwCGAIgAigCNAI8AkQCTAJgAnQC9AMIAzwDR
+			ANMA2ADjAOwA9wD6AQUBDgETASAAAAAAAAACAQAAAAAAAAAoAAAA
+			AAAAAAAAAAAAAAABIw==
+			</data>
+			<key>contentSortColIsAsc</key>
+			<true/>
+			<key>contentViewport</key>
+			<string>{{0, 0}, {695, 477}}</string>
+			<key>isToolbarVisible</key>
+			<true/>
+			<key>queries</key>
+			<string># 날짜 : 2023/06/16
+# 이름 : 정채윤
+# 내용 : 3. 데이터베이스 관리
+
+#실습 3-1
+CREATE DATABASE `TestDB`;
+CREATE USER 'test'@'%' IDENTIFIED BY '1234';
+GRANT ALL PRIVILEGES ON TestDB.* TO 'test'@'%';
+FLUSH PRIVILEGES;
+
+#실습 3-2
+ALTER USER 'test'@'%' IDENTIFIED BY '12345';
+DROP USER 'test'@'%';
+FLUSH PRIVILEGES;
+
+#실습 3-3
+
+#실습 3-4
+#실습 3-5
+#실습 3-6
+#실습 3-7
+#실습 3-8
+#실습 3-9</string>
+			<key>view</key>
+			<string>SP_VIEW_CUSTOMQUERY</string>
+			<key>windowVerticalDividerPosition</key>
+			<real>214</real>
+		</dict>
+	</dict>
+	<key>encrypted</key>
+	<false/>
+	<key>format</key>
+	<string>connection</string>
+	<key>queryFavorites</key>
+	<array/>
+	<key>queryHistory</key>
+	<array>
+		<string>FLUSH PRIVILEGES</string>
+		<string>DROP USER 'test'@'%'</string>
+		<string>#실습 3-2
+ALTER USER 'test'@'%' IDENTIFIED BY '12345'</string>
+		<string>GRANT ALL PRIVILEGES ON TestDB.* TO 'test'@'%'</string>
+		<string># 날짜 : 2023/06/16
+# 이름 : 정채윤
+# 내용 : 3. 데이터베이스 관리
+
+#실습 1-1
+CREATE DATABASE `TestDB`</string>
+		<string># 날짜 : 2023/06/16
+# 이름 : 정채윤
+# 내용 : 3. 데이터베이스 관리
+
+#실습 1-1
+CREATE DATABASE 'TestDB'</string>
+		<string># 날짜 : 2023/06/16
+# 이름 : 정채윤
+# 내용 : 3. 데이터베이스 관리
+
+#실습 1-1
+CREATE USER 'test'@'%' IDENTIFIED BY '1234'</string>
+		<string>DROP DATABASE `TestDB`</string>
+	</array>
+	<key>rdbms_type</key>
+	<string>mysql</string>
+	<key>rdbms_version</key>
+	<string>8.0.33</string>
+	<key>version</key>
+	<integer>1</integer>
+</dict>
+</plist>
