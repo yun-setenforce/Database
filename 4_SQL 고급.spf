@@ -10,6 +10,8 @@
 	<dict>
 		<key>connection</key>
 		<dict>
+			<key>database</key>
+			<string>testdb</string>
 			<key>host</key>
 			<string>127.0.0.1</string>
 			<key>kcid</key>
@@ -359,9 +361,17 @@ SELECT a.uid, a.name, a.pos, b.`name` FROM `Member` AS a
 SELECT SUM(`sale`) AS `2019년도 매출의 합` FROM `Sales`
 			WHERE `year`='2019' AND `uid`=(SELECT `uid` FROM `Member` WHERE `name`='김유신')
 			GROUP BY `year`;
+			use TestDB;
 #실습 4-17
 
-
+			
+SELECT  a.`uid`,  b.`name`  AS `직원이름`, c.`name` AS `부서명`, b.`pos` AS `직급`,a.`year` AS `년도`, SUM(a.`sale`) AS `매출 합`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			JOIN `Department` AS c ON b.`dep` = c.`depNo`
+			WHERE a.`year`=2019
+			GROUP BY a.`uid` HAVING `매출 합` &gt;= 100000;
+			
 
 
 					
@@ -380,121 +390,112 @@ SELECT SUM(`sale`) AS `2019년도 매출의 합` FROM `Sales`
 	<array/>
 	<key>queryHistory</key>
 	<array>
-		<string>#실습 4-16
-SELECT SUM(`sale`) AS `2019년도 매출의 합` FROM `Sales`
-			WHERE `year`='2019' AND `uid`=(SELECT `uid` FROM `Member` WHERE `name`=`김유신`)
-			GROUP BY `year`</string>
-		<string>SELECT SUM(`sale`) AS `2019년도 매출의 합` FROM `Sales`
-			WHERE `year`='2019'
-			GROUP BY `year`</string>
-		<string>#실습 4-16
-use TestDB</string>
-		<string>#실습 4-16
-SELECT SUM(`sale`) AS `2019년도 매출의 합` FROM `Sales`
-			WHERE `year`='2019'
-			GROUP BY `year`</string>
-		<string>#실습 4-16
-SELECT SUM(`sale`) AS `2019년도 매출의 합` FROM `Sales`
-			GROUP BY `year`
-			WHERE `year`='2019'</string>
-		<string>#실습 4-16
-SELECT SUM(`sale`) AS `2019년도 매출의 합` FROM `Sales`
-			GROUP BY `year`
+		<string>SELECT  a.`uid`,  b.`name`  AS `직원이름`, c.`name` AS `부서명`, b.`pos` AS `직급`,a.`year` AS `년도`, SUM(a.`sale`) AS `매출 합`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			JOIN `Department` AS c ON b.`dep` = c.`depNo`
+			WHERE a.`year`=2019
+			GROUP BY a.`uid` HAVING `매출 합` &gt;= 100000</string>
+		<string>SELECT  a.`uid`,  b.`name`  AS `직원이름`, c.`name` AS `부서명`, b.`pos` AS `직급`,a.`year` AS `년도`, SUM(a.`sale`) AS `매출 합`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			JOIN `Department` AS c ON b.`dep` = c.`depNo`
+			WHERE a.`year`=2019
+			GROUP BY a.`uid` HAVING `매출 합` &gt;= 199999</string>
+		<string>SELECT  a.`uid`,  b.`name`  AS `직원이름`, c.`name` AS `부서명`, b.`pos` AS `직급`,a.`year` AS `년도`, SUM(a.`sale`) AS `매출 합`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			JOIN `Department` AS c ON b.`dep` = c.`depNo`
+			WHERE a.`year`=2019
+			GROUP BY a.`uid`</string>
+		<string>SELECT  a.`uid`,  b.`name`  AS `직원이름`, c.`name` AS `부서명`, b.`pos` AS `직급`,a.`year` AS `년도`, SUM(a.`sale`) AS `매출`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			JOIN `Department` AS c ON b.`dep` = c.`depNo`
+			WHERE a.`year`=2019
+			GROUP BY a.`uid`</string>
+		<string>SELECT  a.`uid`,  b.`name`, c.`name`,a.`year` AS `년도`, SUM(a.`sale`) AS `매출`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			JOIN `Department` AS c ON b.`dep` = c.`depNo`
+			WHERE a.`year`=2019
+			GROUP BY a.`uid`</string>
+		<string>SELECT  a.`uid`,  b.`name`, c.`name`, SUM(a.`sale`) AS `매출`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			JOIN `Department` AS c ON b.`dep` = c.`depNo`
+			WHERE a.`year`=2019
+			GROUP BY a.`uid`</string>
+		<string>SELECT  a.`uid`,  b.`name`, c.`name`, SUM(a.`sale`)
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			JOIN `Department` AS c ON b.`dep` = c.`depNo`
+			WHERE a.`year`=2019
+			GROUP BY a.`uid`</string>
+		<string>SELECT  a.`uid`,  b.`name`, c.`name`, a.`sale`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			JOIN `Department` AS c ON b.`dep` = c.`depNo`
+			WHERE a.`year`=2019
+			GROUP BY a.`uid`</string>
+		<string>SELECT  a.`uid`,  b.`name`, c.`name`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			JOIN `Department` AS c ON b.`dep` = c.`depNo`
+			WHERE a.`year`=2019
+			GROUP BY a.`uid`</string>
+		<string>#실습 4-17
+SELECT a.`sale`, b.`name` AS `직원이름`, c.`name` AS `부서명`, b.`pos` AS `직급`, a.`year` AS `년도`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			JOIN `Department` AS c ON b.`dep` = c.`depNo`
+			WHERE `year`=2019
+			GROUP BY a.`uid`</string>
+		<string>SELECT  a.`uid`,  b.`name`, c.`name`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			JOIN `Department` AS c ON b.`dep` = c.`depNo`
+			WHERE `year`=2019
+			GROUP BY a.`uid`</string>
+		<string>SELECT  a.`uid`,  b.`name`, c.`name`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			JOIN `Department` AS c ON b.`dep` = c.`depNo`
+			GROUP BY a.`uid`</string>
+		<string>SELECT  a.`uid`,  b.`name`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			JOIN `Department` AS c ON b.`dep` = c.`depNo`
+			GROUP BY a.`uid`</string>
+		<string>SELECT  a.`uid`,  b.`name`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			GROUP BY a.`uid`</string>
+		<string>#실습 4-17
+SELECT a.`sale`, b.`name` AS `직원이름`, c.`name` AS `부서명`, b.`pos` AS `직급`, a.`year` AS `년도`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			JOIN `Department` AS c ON b.`dep` = c.`depNo`
 			WHERE `year`=2019</string>
-		<string>#실습 4-16
-SELECT SUM(`sale`) AS `2019년도 매출의 합` FROM `Sales`
-			GROUP BY `year`</string>
-		<string>#실습 4-16
-SELECT * FROM `Sales`</string>
-		<string>#실습 4-15
-SELECT a.uid, a.name, a.pos, b.`name` FROM `Member` AS a
-			JOIN `Department` AS b
-			ON a.dep=b.depNo</string>
-		<string>#실습 4-15
-SELECT a.uid, a.name, a.pos, b.`name` FROM `Member` AS a
-			JOIN `Department` AS b
-			ON a.dep=b.depNo
-#실습 4-16
-SELECT * FROM `Sales`</string>
-		<string>#실습 4-15
-SELECT a.uid, a.name, a.pos, b.`name` FROM `Member` AS a
-			JOIN `Department` AS b
-			ON a.dep=b.depNo
-#실습 4-16
-SELECT `year` FROM `Sales`</string>
-		<string>#실습 4-15
-SELECT a.uid, a.name, a.pos, b.`name` FROM `Member` AS a
-			JOIN `Department` AS b
-			ON a.dep=b.depNo
-#실습 4-16
-SELECT `year`
-			FROM `Sales`
-			GROUP BY `year`</string>
-		<string>#실습 4-15
-SELECT a.uid, a.name, a.pos, b.`name` FROM `Member` AS a
-			JOIN `Department` AS b
-			ON a.dep=b.depNo
-#실습 4-16
-SELECT *
-			FROM `Sales`
-			GROUP BY `year`</string>
-		<string>#실습 4-15
-SELECT a.uid, a.name, a.pos, b.`name` FROM `Member` AS a
-			JOIN `Department` AS b
-			ON a.dep=b.depNo
-#실습 4-16
-SELECT  `year`
-			FROM `Sales`
-			GROUP BY `year`</string>
-		<string>#실습 4-15
-SELECT a.uid, a.name, a.pos, b.`name` FROM `Member` AS a
-			JOIN `Department` AS b
-			ON a.dep=b.depNo
-#실습 4-16
-SELECT SUM(`sale`) AS `2019년도 매출의 합`, `year`
-			FROM `Sales`
-			GROUP BY `year`</string>
-		<string>#실습 4-15
-SELECT a.uid, a.name, a.pos, b.`name` FROM `Member` AS a
-			JOIN `Department` AS b
-			ON a.dep=b.depNo
-#실습 4-16
-SELECT SUM(`sale`) AS `2019년도 매출의 합`
-			FROM `Sales`
-			GROUP BY `year`</string>
-		<string>#실습 4-15
-SELECT a.uid, a.name, a.pos, b.`name` FROM `Member` AS a
-			JOIN `Department` AS b
-			ON a.dep=b.depNo
-#실습 4-16
-SELECT SUM(`sale`),`year` AS `2019년도 매출의 합`
-			FROM `Sales`</string>
-		<string>#실습 4-15
-SELECT a.uid, a.name, a.pos, b.`name` FROM `Member` AS a
-			JOIN `Department` AS b
-			ON a.dep=b.depNo
-#실습 4-16
-SELECT SUM(`sale`),`year` AS `2019년도 매출의 합`
-			FROM `Sales`
-			GROUP BY `year`</string>
-		<string>#실습 4-15
-SELECT a.uid, a.name, a.pos, b.`name` FROM `Member` AS a
-			JOIN `Department` AS b
-			ON a.dep=b.depNo
-#실습 4-16
-SELECT SUM(`sale`) AS `2019년도 매출의 합`
-			FROM `Sales`
-			GROUP BY `year`
-#실습 4-17</string>
-		<string>#실습 4-15
-SELECT a.uid, a.name, a.pos, b.`name` FROM `Member` AS a
-			JOIN `Department` AS b
-			ON a.dep=b.depNo
-#실습 4-16
-SELECT SUM(`sale`) AS `2019년도 매출의 합`
-			FROM `Sales`
-			GROUP BY `year`
-			WHERE `year`='2019'</string>
+		<string>SELECT  a.`uid`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			GROUP BY a.`uid`</string>
+		<string>SELECT  b.`name` AS `직원이름`,  b.`pos` AS `직급`, a.`year` AS `년도`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			GROUP BY a.`uid`</string>
+		<string>SELECT  b.`name` AS `직원이름`,  b.`pos` AS `직급`, a.`year` AS `년도`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			GROUP BY `uid`</string>
+		<string>SELECT  b.`name` AS `직원이름`,  b.`pos` AS `직급`, a.`year` AS `년도`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`</string>
+		<string>SELECT  b.`name` AS `직원이름`,  b.`pos` AS `직급`, a.`year` AS `년도`
+			FROM `Sales` AS a  
+			GROUP BY `uid`
+			JOIN `Member` AS b ON a.`uid`= b.`uid`</string>
 	</array>
 	<key>rdbms_type</key>
 	<string>mysql</string>
