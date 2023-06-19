@@ -363,7 +363,6 @@ SELECT SUM(`sale`) AS `2019년도 매출의 합` FROM `Sales`
 			GROUP BY `year`;
 			use TestDB;
 #실습 4-17
-
 			
 SELECT  a.`uid`,  b.`name`  AS `직원이름`, c.`name` AS `부서명`, b.`pos` AS `직급`,a.`year` AS `년도`, SUM(a.`sale`) AS `매출 합`
 			FROM `Sales` AS a  
@@ -390,6 +389,15 @@ SELECT  a.`uid`,  b.`name`  AS `직원이름`, c.`name` AS `부서명`, b.`pos` 
 	<array/>
 	<key>queryHistory</key>
 	<array>
+		<string>#실습 4-17
+
+			
+SELECT  a.`uid`,  b.`name`  AS `직원이름`, c.`name` AS `부서명`, b.`pos` AS `직급`,a.`year` AS `년도`, SUM(a.`sale`) AS `매출 합`
+			FROM `Sales` AS a  
+			JOIN `Member` AS b ON a.`uid`= b.`uid`
+			JOIN `Department` AS c ON b.`dep` = c.`depNo`
+			WHERE a.`year`=2019
+			GROUP BY a.`uid`</string>
 		<string>SELECT  a.`uid`,  b.`name`  AS `직원이름`, c.`name` AS `부서명`, b.`pos` AS `직급`,a.`year` AS `년도`, SUM(a.`sale`) AS `매출 합`
 			FROM `Sales` AS a  
 			JOIN `Member` AS b ON a.`uid`= b.`uid`
@@ -491,10 +499,6 @@ SELECT a.`sale`, b.`name` AS `직원이름`, c.`name` AS `부서명`, b.`pos` AS
 			GROUP BY `uid`</string>
 		<string>SELECT  b.`name` AS `직원이름`,  b.`pos` AS `직급`, a.`year` AS `년도`
 			FROM `Sales` AS a  
-			JOIN `Member` AS b ON a.`uid`= b.`uid`</string>
-		<string>SELECT  b.`name` AS `직원이름`,  b.`pos` AS `직급`, a.`year` AS `년도`
-			FROM `Sales` AS a  
-			GROUP BY `uid`
 			JOIN `Member` AS b ON a.`uid`= b.`uid`</string>
 	</array>
 	<key>rdbms_type</key>
