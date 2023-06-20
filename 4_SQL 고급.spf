@@ -558,6 +558,21 @@ JOIN `Member` 		AS b ON a.`uid`= b.`uid`
 JOIN `Department` 	AS c ON b.`dep` = c.`depNo`
 WHERE a.`year`= 2019 AND a.`sale` &gt;= 50000
 GROUP BY a.`uid` 
+HAVING `매출 합` &gt;= 100000
+ORDER BY `매출 합` DESC</string>
+		<string>#실습 4-17
+SELECT  
+	a.`uid`,  
+	b.`name`  AS `직원이름`, 
+	c.`name` AS `부서명`, 
+	b.`pos` AS `직급`,
+	a.`year` AS `년도`, 
+	SUM(a.`sale`) AS `매출 합`
+FROM `Sales` 		AS a  
+JOIN `Member` 		AS b ON a.`uid`= b.`uid`
+JOIN `Department` 	AS c ON b.`dep` = c.`depNo`
+WHERE a.`year`= 2019 AND a.`sale` &gt;= 50000
+GROUP BY a.`uid` 
 HAVING `매출 합` &gt;= 100000</string>
 		<string>SELECT 
 	SUM(`sale`) AS `매출합`
@@ -653,8 +668,6 @@ SELECT
 FROM `Member` AS a
 JOIN `Department` AS b
 ON a.dep=b.depNo</string>
-		<string>SELECT * FROM `Sales` AS a 
-RIGHT JOIN `Member` AS b ON a.uid = b.uid</string>
 	</array>
 	<key>rdbms_type</key>
 	<string>mysql</string>
