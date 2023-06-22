@@ -287,7 +287,7 @@ SELECT
 FROM `Student` AS a
 JOIN `Register` AS b ON a.stdNo = b.regStdNo
 JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
-ORDER BY `regGrade`, `regFinalScore` DESC;
+ORDER BY `regTotalScore` DESC;
 
 #실습 3-28
 SELECT `stdNo`, `stdName`, `lecName`, `regTotalScore`, `regGrade`
@@ -305,12 +305,28 @@ WHERE NOT `regGrade` IN('F')
 GROUP BY `stdNo`
 ORDER BY `stdNo`;
 
-#실습 3-30
-SELECT `stdNo`, `stdName`, GROUP_CONCAT(`lecName`) AS `신청과목`, GROUP_CONCAT(if(`regTotalScore`&gt;=60, `lecName`, null)) AS `이수과목`
+
+SELECT `stdNo`, `stdName`, SUM(`lecCredit`) AS `이수학점`
 FROM `Student` AS a
 JOIN `Register` AS b ON a.stdNo = b.regStdNo
 JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
-WHERE NOT `regGrade` IN('F')
+WHERE `regGrade`!= 'F'
+GROUP BY `stdNo`
+ORDER BY `stdNo`;
+
+SELECT `stdNo`, `stdName`, SUM(`lecCredit`) AS `이수학점`
+FROM `Student` AS a
+JOIN `Register` AS b ON a.stdNo = b.regStdNo
+JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
+WHERE `regTotalScore`&gt;= 60
+GROUP BY `stdNo`
+ORDER BY `stdNo`;
+
+#실습 3-30
+SELECT `stdNo`, `stdName`, GROUP_CONCAT(`lecName` ORDER BY `lecName`) AS `신청과목`, GROUP_CONCAT(if(`regTotalScore`&gt;=60, `lecName`, null)  ORDER BY `lecName`) AS `이수과목`
+FROM `Student` AS a
+JOIN `Register` AS b ON a.stdNo = b.regStdNo
+JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
 GROUP BY `stdNo`;</string>
 			<key>view</key>
 			<string>SP_VIEW_CUSTOMQUERY</string>
@@ -326,6 +342,115 @@ GROUP BY `stdNo`;</string>
 	<array/>
 	<key>queryHistory</key>
 	<array>
+		<string>#실습 3-30
+SELECT `stdNo`, `stdName`, GROUP_CONCAT(`lecName` ORDER BY `lecName`) AS `신청과목`, GROUP_CONCAT(if(`regTotalScore`&gt;=60, `lecName`, null)  ORDER BY `lecName`) AS `이수과목`
+FROM `Student` AS a
+JOIN `Register` AS b ON a.stdNo = b.regStdNo
+JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
+GROUP BY `stdNo`</string>
+		<string>SELECT `stdNo`, `stdName`, SUM(`lecCredit`) AS `이수학점`
+FROM `Student` AS a
+JOIN `Register` AS b ON a.stdNo = b.regStdNo
+JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
+WHERE `regTotalScore`&gt;= 60
+GROUP BY `stdNo`
+ORDER BY `stdNo`</string>
+		<string>SELECT `stdNo`, `stdName`, SUM(`lecCredit`) AS `이수학점`
+FROM `Student` AS a
+JOIN `Register` AS b ON a.stdNo = b.regStdNo
+JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
+WHERE `regGrade`!= 'F'
+GROUP BY `stdNo`
+ORDER BY `stdNo`</string>
+		<string>#실습 3-29
+SELECT `stdNo`, `stdName`, SUM(`lecCredit`) AS `이수학점`
+FROM `Student` AS a
+JOIN `Register` AS b ON a.stdNo = b.regStdNo
+JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
+WHERE NOT `regGrade` IN('F')
+GROUP BY `stdNo`
+ORDER BY `stdNo`</string>
+		<string>SELECT `stdNo`, `stdName`, SUM(`lecCredit`) AS `이수학점`
+FROM `Student` AS a
+JOIN `Register` AS b ON a.stdNo = b.regStdNo
+JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
+WHERE  `regGrade`!= 'F'
+GROUP BY `stdNo`
+ORDER BY `stdNo`</string>
+		<string>SELECT `stdNo`, `stdName`, SUM(`lecCredit`) AS `이수학점`
+FROM `Student` AS a
+JOIN `Register` AS b ON a.stdNo = b.regStdNo
+JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
+WHERE NOT `regGrade`!= 'F'
+GROUP BY `stdNo`
+ORDER BY `stdNo`</string>
+		<string>#실습 3-27
+SELECT 
+	`stdNo`, `stdName`, `lecNo`, `lecName`, `regMidScore`, `regFinalScore`, `regTotalScore`, `regGrade`
+FROM `Student` AS a
+JOIN `Register` AS b ON a.stdNo = b.regStdNo
+JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
+ORDER BY `regTotalScore` DESC</string>
+		<string>#실습 3-27
+SELECT 
+	`stdNo`, `stdName`, `lecNo`, `lecName`, `regMidScore`, `regFinalScore`, `regTotalScore`, `regGrade`
+FROM `Student` AS a
+JOIN `Register` AS b ON a.stdNo = b.regStdNo
+JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
+ORDER BY `regGrade`, `regFinalScore` DESC</string>
+		<string>#실습 3-25
+SELECT `regStdNo`, `lecName`
+FROM `Register` AS a JOIN `Lecture` AS b ON a.`regLecNo`=b.`lecNo`
+WHERE `regGrade`='A'</string>
+		<string>#실습 3-23
+SELECT
+	`regStdNo`,
+	`regLecNo`,
+	`lecName`,
+	`regMidScore`,
+	`regFinalScore`,
+	`regTotalScore`,
+	`regGrade`
+FROM `Register` AS a
+JOIN `Lecture` AS b
+ON a.`regLecNo` = b.`lecNo`</string>
+		<string>#실습 3-22
+SELECT * FROM `Register` AS a
+JOIN `Lecture` AS b
+ON a.`regLecNo`=b.`lecNo`</string>
+		<string>#실습 3-18
+SELECT * FROM `Student` AS a 
+LEFT JOIN `Register` AS b
+ON a.`stdNo` = b.`regStdNo`</string>
+		<string>SELECT * FROM `Register`</string>
+		<string>#실습 3-30
+SELECT `stdNo`, `stdName`, GROUP_CONCAT(`lecName` ORDER BY `lecName`) AS `신청과목`, GROUP_CONCAT(if(`regTotalScore`&gt;=60, `lecName`, null)  ORDER BY `lecName`) AS `이수과목`
+FROM `Student` AS a
+JOIN `Register` AS b ON a.stdNo = b.regStdNo
+JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
+WHERE NOT `regGrade` IN('F')
+GROUP BY `stdNo`</string>
+		<string>#실습 3-30
+SELECT `stdNo`, `stdName`, GROUP_CONCAT(`lecName` ORDER BY `lecName`) AS `신청과목`, GROUP_CONCAT(if(`regTotalScore`&gt;=60, `lecName`, null)  ORDER BY `lecName`)) AS `이수과목`
+FROM `Student` AS a
+JOIN `Register` AS b ON a.stdNo = b.regStdNo
+JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
+WHERE NOT `regGrade` IN('F')
+GROUP BY `stdNo`</string>
+		<string>#실습 3-30
+SELECT `stdNo`, `stdName`, GROUP_CONCAT(`lecName` ORDER BY `lecName`) AS `신청과목`, GROUP_CONCAT(if(`regTotalScore`&gt;=60, `lecName`, null)) AS `이수과목`
+FROM `Student` AS a
+JOIN `Register` AS b ON a.stdNo = b.regStdNo
+JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
+WHERE NOT `regGrade` IN('F')
+GROUP BY `stdNo`</string>
+		<string>#실습 3-30
+SELECT `stdNo`, `stdName`, GROUP_CONCAT(`lecName` ORDER BY `lecNo`) AS `신청과목`, GROUP_CONCAT(if(`regTotalScore`&gt;=60, `lecName`, null)) AS `이수과목`
+FROM `Student` AS a
+JOIN `Register` AS b ON a.stdNo = b.regStdNo
+JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
+WHERE NOT `regGrade` IN('F')
+GROUP BY `stdNo`</string>
 		<string>#실습 3-30
 SELECT `stdNo`, `stdName`, GROUP_CONCAT(`lecName`) AS `신청과목`, GROUP_CONCAT(if(`regTotalScore`&gt;=60, `lecName`, null)) AS `이수과목`
 FROM `Student` AS a
@@ -347,115 +472,6 @@ FROM `Student` AS a
 JOIN `Register` AS b ON a.stdNo = b.regStdNo
 JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
 WHERE `regGrade`='F'</string>
-		<string>#실습 3-30
-SELECT `stdNo`, `stdName`, GROUP_CONCAT(`lecName`) AS `신청과목`, GROUP_CONCAT(if(`regTotalScore`&gt;=60, `lecName, null`)) AS `이수과목`
-FROM `Student` AS a
-JOIN `Register` AS b ON a.stdNo = b.regStdNo
-JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
-WHERE NOT `regGrade` IN('F')
-GROUP BY `stdNo`</string>
-		<string>#실습 3-30
-SELECT `stdNo`, `stdName`, GROUP_CONCAT(`lecName`) AS `신청과목`, GROUP_CONCAT(if(`regTotalScore`&gt;=60, `lecName, null`)) AS `이수과목`
-`
-FROM `Student` AS a
-JOIN `Register` AS b ON a.stdNo = b.regStdNo
-JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
-WHERE NOT `regGrade` IN('F')
-GROUP BY `stdNo`;</string>
-		<string>#실습 3-30
-SELECT `stdNo`, `stdName`, GROUP_CONCAT(`lecName`) AS `신청과목`, GROUP_CONCAT(if(`regTotalScore`&gt;=60, `lecName, null`)) AS `이수과목`
-`
-FROM `Student` AS a
-JOIN `Register` AS b ON a.stdNo = b.regStdNo
-JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
-WHERE NOT `regGrade` IN('F');</string>
-		<string>#실습 3-30
-SELECT `stdNo`, `stdName`, GROUP_CONCAT(`lecName`) AS `신청과목`, GROUP_CONCAT(if(`regTotalScore`&gt;=60, `lecName, null`)) AS `이수과목`
-`
-FROM `Student` AS a
-JOIN `Register` AS b ON a.stdNo = b.regStdNo
-JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
-WHERE NOT `regGrade` IN('F')</string>
-		<string>#실습 3-29
-SELECT `stdNo`, `stdName`, SUM(`lecCredit`) AS `이수학점`
-FROM `Student` AS a
-JOIN `Register` AS b ON a.stdNo = b.regStdNo
-JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
-WHERE NOT `regGrade` IN('F')
-GROUP BY `stdNo`
-ORDER BY `stdNo`</string>
-		<string>#실습 3-29
-SELECT `stdNo`, `stdName`, SUM(`lecCredit`) AS `이수학점`
-FROM `Student` AS a
-JOIN `Register` AS b ON a.stdNo = b.regStdNo
-JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
-WHERE NOT `regGrade` IN('F')
-GROUP BY `stdNo`</string>
-		<string>#실습 3-29
-SELECT `stdNo`, `stdName`, SUM(`lecCredit`) AS `이수학점`
-FROM `Student` AS a
-JOIN `Register` AS b ON a.stdNo = b.regStdNo
-JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
-WHERE NOT `regGrade` IN('F')</string>
-		<string>#실습 3-29
-SELECT `stdNo`, `stdName`, SUM(`lecCredit`) AS `이수학점`
-FROM `Student` AS a
-JOIN `Register` AS b ON a.stdNo = b.regStdNo
-JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
-WHERE NOT `regGrade`='F'</string>
-		<string>#실습 3-29
-SELECT `stdNo`, `stdName`, SUM(`lecCredit`) AS `이수학점`
-FROM `Student` AS a
-JOIN `Register` AS b ON a.stdNo = b.regStdNo
-JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
-WHERE `regGrade` !='F'</string>
-		<string>#실습 3-27
-SELECT 
-	`stdNo`, `stdName`, `lecNo`, `lecName`, `regMidScore`, `regFinalScore`, `regTotalScore`, `regGrade`
-FROM `Student` AS a
-JOIN `Register` AS b ON a.stdNo = b.regStdNo
-JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
-ORDER BY `regGrade`, `regFinalScore` DESC</string>
-		<string>#실습 3-27
-SELECT 
-	`stdNo`, `stdName`, `lecNo`, `lecName`, `regMidScore`, `regFinalScore`, `regTotalScore`, `regGrade`
-FROM `Student` AS a
-JOIN `Register` AS b ON a.stdNo = b.regStdNo
-JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
-ORDER BY `regGrade`, `stdNo` DESC</string>
-		<string>#실습 3-27
-SELECT 
-	`stdNo`, `stdName`, `lecNo`, `lecName`, `regMidScore`, `regFinalScore`, `regTotalScore`, `regGrade`
-FROM `Student` AS a
-JOIN `Register` AS b ON a.stdNo = b.regStdNo
-JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
-ORDER BY `regGrade`, `stdNo`</string>
-		<string>#실습 3-27
-SELECT 
-	`stdNo`, `stdName`, `lecNo`, `lecName`, `regMidScore`, `regFinalScore`, `regTotalScore`, `regGrade`
-FROM `Student` AS a
-JOIN `Register` AS b ON a.stdNo = b.regStdNo
-JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
-ORDER BY `regGrade`</string>
-		<string>Gra</string>
-		<string>#실습 3-27
-SELECT 
-	`stdNo`, `stdName`, `lecNo`, `lecName`, `regMidScore`, `regFinalScore`, `regTotalScore`, `regGrade`
-FROM `Student` AS a
-JOIN `Register` AS b ON a.stdNo = b.regStdNo
-JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
-ORDER BY `regTotalScore` DESC</string>
-		<string>#실습 3-27
-SELECT 
-	`stdNo`, `stdName`, `lecNo`, `lecName`, `regMidScore`, `regFinalScore`, `regTotalScore`, `regGrade`
-FROM `Student` AS a
-JOIN `Register` AS b ON a.stdNo = b.regStdNo
-JOIN `Lecture` AS c ON b.regLecNo=c.lecNo</string>
-		<string>#실습 3-26
-SELECT * FROM `Student` AS a
-JOIN `Register` AS b ON a.stdNo = b.regStdNo
-JOIN `Lecture` AS c ON b.regLecNo=c.lecNo
-ORDER BY `stdNo`</string>
 	</array>
 	<key>rdbms_type</key>
 	<string>mysql</string>
