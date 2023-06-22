@@ -377,6 +377,8 @@ ORDER BY `구분`, `거래건수` desc;</string>
 	<key>queryHistory</key>
 	<array>
 		<string>SELECT * FROM `bank_account` 
+WHERE `a_item_dist`='S1' AND `a_balance`=(SELECT MAX(`a_balance`) FROM `bank_account` WHERE `a_item_dist`='S1')</string>
+		<string>SELECT * FROM `bank_account` 
 WHERE `a_item_dist`='S1' AND `a_balance`=(SELECT MAX(`a_balance`) FROM `bank_account` WHERE `a_itme_dist`='S1')</string>
 		<string>SELECT
 	ANY_VALUE(`t_no`) ,
@@ -520,8 +522,6 @@ WHERE
 	`t_dist`=1</string>
 		<string>#실습 2-14
 SELECT * FROM `bank_transaction` WHERE `t_dist`=2 ORDER BY `t_amount` DESC</string>
-		<string>#실습 2-11
-SELECT * FROM `bank_customer` WHERE `c_addr` LIKE '경기도%'</string>
 	</array>
 	<key>rdbms_type</key>
 	<string>mysql</string>
