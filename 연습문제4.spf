@@ -311,6 +311,8 @@ FROM `Customer` AS a
 LEFT JOIN `Order` AS b ON a.custId = b.custId
 WHERE b.`orderId` IS NULL;
 
+SELECT 	`name` FROM `Customer`
+WHERE `custId` NOT IN(SELECT DISTINCT `custId` FROM `Order`);
 
 #실습 4-44
 INSERT INTO `Book`(`bookId`,`bookName`,`publisher`) VALUES(11,'스포츠 의학','한솔의학서적');
@@ -340,6 +342,13 @@ SELECT * FROM `Customer`;</string>
 	<array/>
 	<key>queryHistory</key>
 	<array>
+		<string>#실습 4-43
+SELECT a.`name`
+FROM `Customer` AS a
+LEFT JOIN `Order` AS b ON a.custId = b.custId
+WHERE b.`orderId` IS NULL</string>
+		<string>SELECT 	`name` FROM `Customer`
+WHERE `custId` NOT IN(SELECT DISTINCT `custId` FROM `Order`)</string>
 		<string>#실습 4-42
 SELECT `bookName` FROM `Book` ORDER BY `price` DESC LIMIT 1</string>
 		<string>SELECT `bookName` FROM `Book` WHERE `price`=(SELECT MAX(`price`) FROM `Book`)</string>
@@ -397,10 +406,6 @@ DELETE FROM `Customer` WHERE `custId`=5</string>
 UPDATE `Customer` SET `address` = '대한민국 부산' WHERE `custId`=5</string>
 		<string>#실습 4-44
 UPDATE `Customer` SET `address` = '대한민국 부산' WHERE `custId`=5</string>
-		<string>#실습 4-44
-UPDATE `Customer` SET `address` = '대한민국 부산' WHERE `cusId`=5</string>
-		<string>#실습 4-43
-INSERT INTO `Book`(`bookId`,`bookName`,`publisher`) VALUES(11,'스포츠 의학','한솔의학서적')</string>
 	</array>
 	<key>rdbms_type</key>
 	<string>mysql</string>
