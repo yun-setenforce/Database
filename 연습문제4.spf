@@ -157,6 +157,8 @@ SELECT `publisher` FROM `Book`;
 #실습 4-9
 SELECT DISTINCT `publisher` FROM `Book`;
 
+SELECT  `publisher` FROM `Book` GROUP BY `publisher`;
+
 #실습 4-10
 SELECT * FROM `Book` WHERE `price`&gt;=20000;
 
@@ -174,6 +176,7 @@ SELECT * FROM `Book` WHERE `bookId` IN(2,3,5);
 
 #실습 4-15
 SELECT * FROM `Book` WHERE `bookId`%2 = 0;
+SELECT * FROM `Book` WHERE MOD(`bookId`,2) = 0;
 
 #실습 4-16
 SELECT * FROM `Customer` WHERE `name` LIKE '박%';
@@ -279,8 +282,7 @@ WHERE c.`price` = 20000;
 #실습 4-40
 SELECT a.`name`, b.`saleprice` 
 FROM `Customer` AS a
-LEFT JOIN `Order` AS b ON a.custId = b.custId
-LEFT JOIN `Book` AS c ON b.bookId = c.bookId;
+LEFT JOIN `Order` AS b ON a.custId = b.custId;
 
 #실습 4-41
 SELECT SUM(`saleprice`) AS `총매출`
@@ -289,8 +291,19 @@ LEFT JOIN `Order` AS b ON a.custId = b.custId
 WHERE a.`name`='김연아'
 GROUP BY a.`name`;
 
+SELECT SUM(`saleprice`) AS `총매출`
+FROM `Customer` AS a
+LEFT JOIN `Order` AS b ON a.custId = b.custId
+WHERE a.`name`='김연아';
+
+SELECT SUM(`saleprice`) AS `총매출`
+FROM `Order`
+WHERE `custId` = (SELECT `custId` FROM `Customer` WHERE `name`='김연아');
+
 #실습 4-42
 SELECT `bookName` FROM `Book` ORDER BY `price` DESC LIMIT 1;
+
+SELECT `bookName` FROM `Book` WHERE `price`=(SELECT MAX(`price`) FROM `Book`);
 
 #실습 4-43
 SELECT a.`name`
@@ -299,17 +312,17 @@ LEFT JOIN `Order` AS b ON a.custId = b.custId
 WHERE b.`orderId` IS NULL;
 
 
-#실습 4-43
+#실습 4-44
 INSERT INTO `Book`(`bookId`,`bookName`,`publisher`) VALUES(11,'스포츠 의학','한솔의학서적');
 
 SELECT * FROM `Book`;
 
-#실습 4-44
+#실습 4-45
 UPDATE `Customer` SET `address` = '대한민국 부산' WHERE `custId`=5;
 
 SELECT * FROM `Customer`;
 
-#실습 4-45
+#실습 4-46
 DELETE FROM `Customer` WHERE `custId`=5;
 
 SELECT * FROM `Customer`;</string>
@@ -327,6 +340,53 @@ SELECT * FROM `Customer`;</string>
 	<array/>
 	<key>queryHistory</key>
 	<array>
+		<string>#실습 4-42
+SELECT `bookName` FROM `Book` ORDER BY `price` DESC LIMIT 1</string>
+		<string>SELECT `bookName` FROM `Book` WHERE `price`=(SELECT MAX(`price`) FROM `Book`)</string>
+		<string>SELECT SUM(`saleprice`) AS `총매출`
+FROM `Order`
+WHERE `custId` = (SELECT `custId` FROM `Customer` WHERE `name`='김연아')</string>
+		<string>#실습 4-41
+SELECT SUM(`saleprice`) AS `총매출`
+FROM `Customer` AS a
+LEFT JOIN `Order` AS b ON a.custId = b.custId
+WHERE a.`name`='김연아'
+GROUP BY a.`name`</string>
+		<string>SELECT SUM(`saleprice`) AS `총매출`
+FROM `Customer` AS a
+LEFT JOIN `Order` AS b ON a.custId = b.custId
+WHERE a.`name`='김연아'</string>
+		<string>#실습 4-40
+SELECT a.`name`, b.`saleprice` 
+FROM `Customer` AS a
+LEFT JOIN `Order` AS b ON a.custId = b.custId</string>
+		<string>#실습 4-40
+SELECT a.`name`, b.`saleprice` 
+FROM `Customer` AS a
+LEFT JOIN `Order` AS b ON a.custId = b.custd</string>
+		<string>#실습 4-40
+SELECT a.`name`, b.`saleprice` 
+FROM `Customer` AS a
+LEFT JOIN `Order` AS b ON a.custId = b.custId
+LEFT JOIN `Book` AS c ON b.bookId = c.bookId</string>
+		<string>LEFT JOIN `Book` AS c ON b.bookId = c.bookId</string>
+		<string>#실습 4-37
+
+SELECT a.`name`, SUM(`saleprice`) 
+FROM `Customer` AS a
+JOIN `Order` AS b 
+ON a.custId = b.custId
+GROUP BY a.`name`
+ORDER BY a.`name`</string>
+		<string>#실습 4-35
+SELECT * 
+FROM `Customer` AS a
+JOIN `Order` AS b 
+ON a.custId = b.custId
+ORDER BY a.custId</string>
+		<string>#실습 4-22
+SELECT * FROM `Book` WHERE `bookName` LIKE '_구%'</string>
+		<string>SELECT  `publisher` FROM `Book` GROUP BY `publisher`</string>
 		<string>SELECT * FROM `Customer`</string>
 		<string>#실습 4-45
 DELETE FROM `Customer` WHERE `custId`=5</string>
@@ -341,79 +401,6 @@ UPDATE `Customer` SET `address` = '대한민국 부산' WHERE `custId`=5</string
 UPDATE `Customer` SET `address` = '대한민국 부산' WHERE `cusId`=5</string>
 		<string>#실습 4-43
 INSERT INTO `Book`(`bookId`,`bookName`,`publisher`) VALUES(11,'스포츠 의학','한솔의학서적')</string>
-		<string>#실습 4-43
-SELECT a.`name`
-FROM `Customer` AS a
-LEFT JOIN `Order` AS b ON a.custId = b.custId
-WHERE b.`orderId` IS NULL</string>
-		<string>#실습 4-42
-SELECT `bookName` FROM `Book` ORDER BY `price` DESC LIMIT 1</string>
-		<string>#실습 4-38
-SELECT a.`name`, c.`bookName` 
-FROM `Customer` AS a
- JOIN `Order` AS b ON a.custId = b.custId
- JOIN `Book` AS c ON b.bookId = c.bookId
- ORDER BY a.`custId`</string>
-		<string>#실습 4-38
-SELECT a.`name`, c.`bookName` 
-FROM `Customer` AS a
- JOIN `Order` AS b ON a.custId = b.custId
- JOIN `Book` AS c ON b.bookId = c.bookId
- ORDER BY a.`name`</string>
-		<string>#실습 4-38
-SELECT a.`name`, c.`bookName` 
-FROM `Customer` AS a
- JOIN `Order` AS b ON a.custId = b.custId
- JOIN `Book` AS c ON b.bookId = c.bookId</string>
-		<string>#실습 4-39
-SELECT a.`name`, c.`bookName` 
-FROM `Customer` AS a
-LEFT JOIN `Order` AS b ON a.custId = b.custId
-LEFT JOIN `Book` AS c ON b.bookId = c.bookId
-WHERE c.`price` = 20000</string>
-		<string>#실습 4-38
-SELECT a.`name`, c.`bookName` 
-FROM `Customer` AS a
-LEFT JOIN `Order` AS b ON a.custId = b.custId
-LEFT JOIN `Book` AS c ON b.bookId = c.bookId</string>
-		<string>#실습 4-40
-SELECT a.`name`, b.`saleprice` 
-FROM `Customer` AS a
-LEFT JOIN `Order` AS b ON a.custId = b.custId
-LEFT JOIN `Book` AS c ON b.bookId = c.bookId</string>
-		<string>#실습 4-40
-
-#실습 4-41
-SELECT SUM(`saleprice`) AS `총매출`
-FROM `Customer` AS a
-LEFT JOIN `Order` AS b ON a.custId = b.custId
-WHERE a.`name`='김연아'
-GROUP BY a.`name`</string>
-		<string>#실습 4-39
-SELECT a.`name`, b.`bookName` 
-FROM `Customer` AS a
-LEFT JOIN `Order` AS b ON a.custId = b.custId
-LEFT JOIN `Book` AS c ON b.bookId = c.bookId
-WHERE c.`price` = 20000</string>
-		<string>#실습 4-39
-SELECT SUM(`saleprice`) AS `총매출`
-FROM `Customer` AS a
-LEFT JOIN `Order` AS b ON a.custId = b.custId
-WHERE a.`name`='김연아'
-GROUP BY a.`name`</string>
-		<string>#실습 4-38
-SELECT a.`name`, b.`saleprice` 
-FROM `Customer` AS a
-LEFT JOIN `Order` AS b ON a.custId = b.custId
-LEFT JOIN `Book` AS c ON b.bookId = c.bookId</string>
-		<string>#실습 4-37
-
-SELECT a.`name`, SUM(`saleprice`) 
-FROM `Customer` AS a
-JOIN `Order` AS b 
-ON a.custId = b.custId
-GROUP BY a.`name`
-ORDER BY a.`name`</string>
 	</array>
 	<key>rdbms_type</key>
 	<string>mysql</string>
