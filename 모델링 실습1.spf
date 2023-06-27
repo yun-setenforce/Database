@@ -244,6 +244,11 @@ SET
 WHERE
 	`stdNo`='20111013' AND `lecNo`='111012';
 	
+
+UPDATE `Register` 
+SET
+	`regAttenScore`=CEIL(RAND()*100),`regMidScore`=CEIL(RAND()*100),`regFinalScore`=CEIL(RAND()*100);
+	
 select * from register;	
 
 #문제7
@@ -289,6 +294,20 @@ WHERE `stdName`='정우성';</string>
 	<array/>
 	<key>queryHistory</key>
 	<array>
+		<string>select * from register</string>
+		<string>UPDATE `Register`
+SET `regTotal`=(`regAttenScore`+`regMidScore`+`regFinalScore`)/3
+WHERE `regTotal` IS NULL</string>
+		<string>#문제7
+UPDATE `Register`
+SET `regTotal`=(`regAttenScore`+`regMidScore`+`regFinalScore`)/3
+WHERE `regTotal` IS NULL</string>
+		<string>UPDATE `Register` 
+SET
+	`regAttenScore`=CEIL(RAND()*100),`regMidScore`=CEIL(RAND()*100),`regFinalScore`=CEIL(RAND()*100)</string>
+		<string>#문제1
+SELECT `stdNo`, `stdName`, `stdHp`, a.`depNo`,`depName` 
+FROM `Students` AS a JOIN `Departments` AS b ON a.depNo=b.depNo</string>
 		<string>#문제10
 SELECT AVG(`regTotal`) AS `총점의 평균`
 FROM `Register` AS a
@@ -323,7 +342,6 @@ FROM `Register` AS a
 JOIN `Students` AS b ON a.stdNo=b.stdNo
 WHERE `stdName`='정우성'</string>
 		<string>SELECT * FROM `Register` ORDER BY `regTotal` DESC LIMIT 1</string>
-		<string>select * from register</string>
 		<string>#문제9
 SELECT MAX(`regTotal`) FROM `Register`</string>
 		<string>#문제8
@@ -332,10 +350,6 @@ SET `regGrade`= if(`regTotal` &gt;= 90, 'A',
 				if(`regTotal` &gt;= 80, 'B',
 				if(`regTotal` &gt;= 70, 'C',
 				if(`regTotal` &gt;= 60, 'D', 'F'))))</string>
-		<string>#문제7
-UPDATE `Register`
-SET `regTotal`=(`regAttenScore`+`regMidScore`+`regFinalScore`)/3
-WHERE `regTotal` IS NULL</string>
 		<string>#문제7
 UPDATE `Register`
 SET `regTotal`=`regAttenScore`+`regMidScore`+`regFinalScore`
@@ -407,24 +421,6 @@ SET
 	`regFinalScore`=50
 WHERE
 	`stdNo`='20101001' AND `lecNo`='101001'</string>
-		<string>#문제6
-UPDATE `Register` 
-SET
-	`regAttenScore`=80,
-	`regMidScore`=90,
-	`regFinalScore`=50
-WHERE
-	`stdNo`='20201001' AND `lecNo`='101001'</string>
-		<string>#문제5
-SELECT a.`stdNo`, `stdName`, a.`lecNo`, `lecName`, a.`proNo`, `proName`
-FROM `Register` AS a 
-JOIN `Students` AS b ON a.stdNo=b.stdNo
-JOIN `Lectures` AS c ON a.lecNo=c.lecNo
-JOIN `Professors` AS d ON a.proNo=d.proNo</string>
-		<string>#문제4
-SELECT  `lecNo`, `lecName`,a.`proNo`, `proName`, `proHp`,b.`depNo`,`depName`
-FROM `Lectures` AS a JOIN `Professors` AS b ON a.proNo=b.proNo
-JOIN `Departments` AS c ON b.depNo = c.depNo</string>
 	</array>
 	<key>rdbms_type</key>
 	<string>mysql</string>
