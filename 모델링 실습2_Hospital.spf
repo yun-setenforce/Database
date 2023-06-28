@@ -267,6 +267,12 @@ SELECT * FROM patients
 WHERE ((TO_DAYS(NOW()) - TO_DAYS(STR_TO_DATE(CONCAT(19,SUBSTR(`pat_jumin`,1,2),'-',SUBSTR(`pat_jumin`,3,2),'-',SUBSTR(`pat_jumin`,5,2)),'%Y-%m-%d')))/365) BETWEEN 30 AND 40;
 
 
+select pat_name, YEAR(NOW()) - CONCAT(19,SUBSTR(`pat_jumin`,1,2))+1
+from patients;
+
+#날짜 안 따지고 한국 나이일 경우
+select * FROM patients
+WHERE  (YEAR(NOW()) - CONCAT(19,SUBSTR(`pat_jumin`,1,2))+1) BETWEEN 30 AND 40;
 #문제8
 SELECT DISTINCT a.`dep_no`, `dep_name`
 FROM `Departments` AS a
@@ -291,7 +297,7 @@ LIMIT 1;
 			<key>view</key>
 			<string>SP_VIEW_CUSTOMQUERY</string>
 			<key>windowVerticalDividerPosition</key>
-			<real>92</real>
+			<real>189</real>
 		</dict>
 	</dict>
 	<key>encrypted</key>
@@ -302,12 +308,49 @@ LIMIT 1;
 	<array/>
 	<key>queryHistory</key>
 	<array>
-		<string>#문제10 
-SELECT  a.`nur_id`, b.`nur_name`, count(`pat_id`) AS `담당 환자수`
-FROM `Patients` AS a
-JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`
-GROUP BY a.`nur_id`
-ORDER BY `담당 환자수` DESC</string>
+		<string>select *,  YEAR(NOW()) - CONCAT(19,SUBSTR(`pat_jumin`,1,2))+1 FROM patients
+WHERE  (YEAR(NOW()) - CONCAT(19,SUBSTR(`pat_jumin`,1,2))+1) BETWEEN 30 AND 40</string>
+		<string>select * FROM patients
+WHERE  (YEAR(NOW()) - CONCAT(19,SUBSTR(`pat_jumin`,1,2))+1) BETWEEN 30 AND 40</string>
+		<string>select * FROM patients
+WHERE  (YEAR(NOW()) - CONCAT(19,SUBSTR(`pat_jumin`,1,2))+1) BETWEEEN 30 AND 40</string>
+		<string>select * FROM patients
+WHERE  (YEAR(NOW()) - CONCAT(19,SUBSTR(`pat_jumin`,1,2))+1) BEtWEEEN 30 AND 40</string>
+		<string>select pat_name, YEAR(NOW()) - CONCAT(19,SUBSTR(`pat_jumin`,1,2))+1
+from patients</string>
+		<string>select pat_name, YEAR(NOW()) - CONCAT(19,SUBSTR(`pat_jumin`,1,2))
+from patients</string>
+		<string>select pat_name, CONCAT(19,SUBSTR(`pat_jumin`,1,2))
+from patients</string>
+		<string>select pat_name, CONCAT(19,SUBSTR(`pat_jumin`,1,2) 
+from patients</string>
+		<string>select pat_name, (CONCAT(19,SUBSTR(`pat_jumin`,1,2)) 
+from patients</string>
+		<string>select pat_name, YEAR(NOW()) 
+from patients</string>
+		<string>select pat_name, YEAR(NOW()) - (CONCAT(19,SUBSTR(`pat_jumin`,1,2)) 
+from patients</string>
+		<string>select pat_name, YEAR(NOW()) - YEAR(CONCAT(19,SUBSTR(`pat_jumin`,1,2))) 
+from patients</string>
+		<string>select pat_name, (YEAR(NOW()) - YEAR(CONCAT(19,SUBSTR(`pat_jumin`,1,2)))) AS 나이
+from patients</string>
+		<string>select pat_name, (YEAR(NOW()) - YEAR(STR_TO_DATE(CONCAT(19,SUBSTR(`pat_jumin`,1,2))))) AS 나이
+from patients</string>
+		<string>select pat_name, (YEAR(NOW()) - YEAR(STR_TO_DATE(CONCAT(19,SUBSTR(`pat_jumin`,1,2)))) AS 나이
+from patients</string>
+		<string>select pat_name, (YEAR(NOW()) - YEAR(STR_TO_DATE(CONCAT(19,SUBSTR(`pat_jumin`,1,2))) AS 나이
+from patients</string>
+		<string>SELECT * FROM patients
+WHERE ((TO_DAYS(NOW()) - TO_DAYS(STR_TO_DATE(CONCAT(19,SUBSTR(`pat_jumin`,1,2),'-',SUBSTR(`pat_jumin`,3,2),'-',SUBSTR(`pat_jumin`,5,2)),'%Y-%m-%d')))/365) BETWEEN 30 AND 40</string>
+		<string>select pat_name, ((TO_DAYS(NOW()) - TO_DAYS(STR_TO_DATE(CONCAT(19,SUBSTR(`pat_jumin`,1,2),'-',SUBSTR(`pat_jumin`,3,2),'-',SUBSTR(`pat_jumin`,5,2)),'%Y-%m-%d')))/365) AS 나이
+from patients</string>
+		<string>#문제6.
+SELECT a.`treat_no`, `pat_name`, `doc_name`, `treat_contents`, `chart_contetns`, `treat_datetime`
+FROM `Treatments` AS a
+JOIN `Patients` AS b ON a.pat_id = b.pat_id
+JOIN `Doctors` AS c ON c.doc_id = a.doc_id
+JOIN `Charts` AS d ON a.treat_no = d.treat_no
+WHERE `treat_contents` LIKE '%화상%'</string>
 		<string>#문제10 
 SELECT  a.`nur_id`, b.`nur_name`, count(`pat_id`) AS `담당 환자수`
 FROM `Patients` AS a
@@ -315,99 +358,6 @@ JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`
 GROUP BY a.`nur_id`
 ORDER BY `담당 환자수` DESC
 LIMIT 1</string>
-		<string>#문제10 
-SELECT  a.`nur_id`, a.`nur_name`, count(`pat_id`) AS `담당 환자수`
-FROM `Patients` AS a
-JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`
-GROUP BY a.`nur_id`
-ORDER BY `담당 환자수` DESC</string>
-		<string>#문제10 
-SELECT  count(`pat_id`) AS `max`
-FROM `Patients` AS a
-JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`
-GROUP BY a.`nur_id`
-ORDER BY `max` DESC</string>
-		<string>#문제10 
-SELECT  count(`pat_id`) AS `max`
-FROM `Patients` AS a
-JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`
-GROUP BY a.`nur_id`
-ORDER BY `max`</string>
-		<string>#문제10 
-SELECT  MAX(count(`pat_id`))
-FROM `Patients` AS a
-JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`
-GROUP BY a.`nur_id`</string>
-		<string>#문제10 
-SELECT  count(pat_id)
-FROM `Patients` AS a
-JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`
-GROUP BY a.`nur_id`</string>
-		<string>#문제10 
-SELECT  a.nur_id
-FROM `Patients` AS a
-JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`
-GROUP BY a.`nur_id`</string>
-		<string>#문제10 
-SELECT  nur_id
-FROM `Patients` AS a
-JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`
-GROUP BY a.`nur_id`</string>
-		<string>#문제10 
-SELECT  *
-FROM `Patients` AS a
-JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`
-GROUP BY a.`nur_id`</string>
-		<string>#문제10 
-SELECT  *
-FROM `Patients` AS a
-JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`
-GROUP BY b.`nur_id`</string>
-		<string>#문제10 
-SELECT  *
-FROM `Patients` AS a
-JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`
-GROUP BY `nur_id`</string>
-		<string>#문제10 
-SELECT  *
-FROM `Patients` AS a
-JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`</string>
-		<string>#문제10 
-SELECT  count(`nur_id`)
-FROM `Patients` AS a
-JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`</string>
-		<string>#문제10 
-SELECT  count(`nur_id`)
-FROM `Patients` AS a
-JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`
-GROUP BY `nur_id`</string>
-		<string>#문제10 
-SELECT  `nur_id`
-FROM `Patients` AS a
-JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`
-GROUP BY `nur_id`</string>
-		<string>#문제10 
-SELECT COUNT(`pat_id`), `nur_id`
-FROM `Patients` AS a
-JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`
-GROUP BY `nur_id`</string>
-		<string>#문제10 
-SELECT COUNT(`pat_id`)
-FROM `Patients` AS a
-JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`
-GROUP BY `nur_id`</string>
-		<string>#문제9
-SELECT GROUP_CONCAT(`pat_name`ORDER BY `pat_name` SEPARATOR '^') AS `김태희 간호사 담당 환자`
-FROM `Patients` AS a
-JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`
-WHERE `nur_name`='김태희'
-GROUP BY a.nur_id</string>
-		<string>#문제9
-SELECT GROUP_CONCAT(`pat_name`ORDER BY `pat_name` SEPARATOR '^') AS `김태희 간호사 담당 환자`
-FROM `Patients` AS a
-JOIN `Nurses` AS b ON a.`nur_id` = b.`nur_id`
-GROUP BY a.nur_id
-HAVING `nur_name`='김태희'</string>
 	</array>
 	<key>rdbms_type</key>
 	<string>mysql</string>
