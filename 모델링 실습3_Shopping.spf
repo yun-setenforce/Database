@@ -42,7 +42,7 @@
 		<key>session</key>
 		<dict>
 			<key>connectionEncoding</key>
-			<string>utf8</string>
+			<string>utf8mb3</string>
 			<key>contentFilterV2</key>
 			<dict>
 				<key>children</key>
@@ -58,20 +58,24 @@
 			<data>
 			YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0
 			b3BYJG9iamVjdHMSAAGGoF8QD05TS2V5ZWRBcmNoaXZlctEICVRk
-			YXRhgAGoCwwXGBkaHiVVJG51bGzTDQ4PEBMWV05TLmtleXNaTlMu
-			b2JqZWN0c1YkY2xhc3OiERKAAoADohQVgASABYAHVHR5cGVUcm93
-			c18QHVNlbGVjdGlvbkRldGFpbFR5cGVOU0luZGV4U2V00hsPHB1c
-			TlNSYW5nZUNvdW50EACABtIfICEiWiRjbGFzc25hbWVYJGNsYXNz
-			ZXNaTlNJbmRleFNldKIjJFpOU0luZGV4U2V0WE5TT2JqZWN00h8g
-			JidcTlNEaWN0aW9uYXJ5oiYkAAgAEQAaACQAKQAyADcASQBMAFEA
-			UwBcAGIAaQBxAHwAgwCGAIgAigCNAI8AkQCTAJgAnQC9AMIAzwDR
-			ANMA2ADjAOwA9wD6AQUBDgETASAAAAAAAAACAQAAAAAAAAAoAAAA
-			AAAAAAAAAAAAAAABIw==
+			YXRhgAGuCwwZGhscHSEoLTE1ODxVJG51bGzTDQ4PEBQYV05TLmtl
+			eXNaTlMub2JqZWN0c1YkY2xhc3OjERITgAKAA4AEoxUWF4AFgAaA
+			CIANVHR5cGVUcm93c1RrZXlzXxAmU2VsZWN0aW9uRGV0YWlsVHlw
+			ZVByaW1hcnlLZXllZERldGFpbHPTDQ4PHh8goKCAB9IiIyQlWiRj
+			bGFzc25hbWVYJGNsYXNzZXNfEBNOU011dGFibGVEaWN0aW9uYXJ5
+			oyQmJ1xOU0RpY3Rpb25hcnlYTlNPYmplY3TSDg8pLKIqK4AJgAuA
+			DNIPLi8wWU5TLnN0cmluZ4AKVnByb2ROb9IiIzIzXxAPTlNNdXRh
+			YmxlU3RyaW5nozI0J1hOU1N0cmluZ9IPLi83gApWY2F0ZU5v0iIj
+			OTpeTlNNdXRhYmxlQXJyYXmjOTsnV05TQXJyYXnSIiMmPaImJwAI
+			ABEAGgAkACkAMgA3AEkATABRAFMAYgBoAG8AdwCCAIkAjQCPAJEA
+			kwCXAJkAmwCdAJ8ApACpAK4A1wDeAN8A4ADiAOcA8gD7AREBFQEi
+			ASsBMAEzATUBNwE5AT4BSAFKAVEBVgFoAWwBdQF6AXwBgwGIAZcB
+			mwGjAagAAAAAAAACAQAAAAAAAAA+AAAAAAAAAAAAAAAAAAABqw==
 			</data>
 			<key>contentSortColIsAsc</key>
 			<true/>
 			<key>contentViewport</key>
-			<string>{{0, 0}, {695, 477}}</string>
+			<string>{{0, 0}, {876, 992}}</string>
 			<key>isToolbarVisible</key>
 			<true/>
 			<key>queries</key>
@@ -283,7 +287,54 @@ VALUES('user2',	'170115',	1, '2022-01-10 10:50:12');
 INSERT INTO `Carts`(`userId`,`prodNo`,`cartProdCount`,`cartProdDate`) 
 VALUES('user3',	'110101',	1, '2022-01-10 10:50:12');
 INSERT INTO `Carts`(`userId`,`prodNo`,`cartProdCount`,`cartProdDate`) 
-VALUES('user6',	'130101',	1, '2022-01-10 10:50:12');</string>
+VALUES('user6',	'130101',	1, '2022-01-10 10:50:12');
+
+
+#문제1.
+SELECT `userName`,`prodName`,`cartProdCount` from `Carts`
+JOIN `Users` USING(`userId`)
+JOIN `Products` USING(`prodNo`)
+WHERE `cartProdCount`&gt;=2;
+
+
+#문제2
+SELECT `Products`.`prodNo`,`cateName`,`prodName`,`prodPrice`,`sellerManager`,`sellerPhone`
+FROM `Products`
+JOIN `Categories` USING(`cateNo`)
+JOIN `Sellers` USING(`sellerNo`);
+
+#문제3
+SELECT `userId`, `userName`, `userHp`,`userPoint`, IFNULL(SUM(`point`),0) AS `적립 포인트 합`
+FROM `Users` 
+LEFT JOIN `Points` USING(`userId`)
+GROUP BY `userId`;
+
+#문제4
+SELECT `orderNo`,`Users`.`userId`,`userName`,`orderTotalPrice`,`orderDate`
+FROM `Orders`
+JOIN `Users` USING(`userId`)
+WHERE `orderTotalPrice` &gt;=100000
+ORDER BY `orderTotalPrice` DESC, `userName`;
+
+#문제5
+SELECT  c.`orderNo`,  GROUP_CONCAT(`prodName`)
+FROM `OrderItems` 	AS c 
+JOIN `Orders`		AS a ON a.orderNo = c.orderNo
+JOIN `Users`		AS b ON a.userId=b.userId
+JOIN `Products`		AS d ON c.prodNo = d.prodNo
+GROUP BY a.`orderNo`;
+
+#문제6
+SELECT `prodNo`, `prodName`, `prodPrice`, `prodDiscount`, (`prodPrice`- (`prodPrice`*`prodDiscount`/100)) AS `할인가`
+FROM `Products`;
+
+select * from products;
+ALTER TABLE products RENAME COLUMN `prodStock` TO `prodStock2`;
+ALTER TABLE products RENAME COLUMN `prodPrice` TO `prodStock`;
+ALTER TABLE products RENAME COLUMN `prodStock2` TO `prodPrice`;
+</string>
+			<key>table</key>
+			<string>products</string>
 			<key>view</key>
 			<string>SP_VIEW_CUSTOMQUERY</string>
 			<key>windowVerticalDividerPosition</key>
@@ -298,194 +349,96 @@ VALUES('user6',	'130101',	1, '2022-01-10 10:50:12');</string>
 	<array/>
 	<key>queryHistory</key>
 	<array>
-		<string>INSERT INTO `Carts`(`userId`,`prodNo`,`cartProdCount`,`cartProdDate`) 
-VALUES('user1',	'100101',	1, '2022-01-10 10:50:12');
-INSERT INTO `Carts`(`userId`,`prodNo`,`cartProdCount`,`cartProdDate`) 
-VALUES('user1',	'100110',	2, '2022-01-10 10:50:12');
-INSERT INTO `Carts`(`userId`,`prodNo`,`cartProdCount`,`cartProdDate`) 
-VALUES('user3',	'120103',	1, '2022-01-10 10:50:12');
-INSERT INTO `Carts`(`userId`,`prodNo`,`cartProdCount`,`cartProdDate`) 
-VALUES('user4',	'130112',	1, '2022-01-10 10:50:12');
-INSERT INTO `Carts`(`userId`,`prodNo`,`cartProdCount`,`cartProdDate`) 
-VALUES('user5',	'130101',	1, '2022-01-10 10:50:12');
-INSERT INTO `Carts`(`userId`,`prodNo`,`cartProdCount`,`cartProdDate`) 
-VALUES('user2',	'110101',	3, '2022-01-10 10:50:12');
-INSERT INTO `Carts`(`userId`,`prodNo`,`cartProdCount`,`cartProdDate`) 
-VALUES('user2',	'160103',	1, '2022-01-10 10:50:12');
-INSERT INTO `Carts`(`userId`,`prodNo`,`cartProdCount`,`cartProdDate`) 
-VALUES('user2',	'170115',	1, '2022-01-10 10:50:12');
-INSERT INTO `Carts`(`userId`,`prodNo`,`cartProdCount`,`cartProdDate`) 
-VALUES('user3',	'110101',	1, '2022-01-10 10:50:12');
-INSERT INTO `Carts`(`userId`,`prodNo`,`cartProdCount`,`cartProdDate`) 
-VALUES('user6',	'130101',	1, '2022-01-10 10:50:12')</string>
-		<string>pordNo</string>
-		<string>INSERT INTO `Carts`(`userId`,`pordNo`,`cartProdCount`,`cartProdDate`) 
-VALUES('user1',	'100101',	1, '2022-01-10 10:50:12')</string>
-		<string>INSERT INTO `OrderItems`(`orderNo`,	`prodNo`,`itemPrice`,`itemDiscount`,`itemCount`)
-VALUES('22010210001',	'100101',	25000,	20,	1);
-INSERT INTO `OrderItems`(`orderNo`,	`prodNo`,`itemPrice`,`itemDiscount`,`itemCount`)
-VALUES('22010210002',	'120103',	21000,	10,	3);
-INSERT INTO `OrderItems`(`orderNo`,	`prodNo`,`itemPrice`,`itemDiscount`,`itemCount`)
-VALUES('22010310001',	'130112',	15000,	0,	1);
-INSERT INTO `OrderItems`(`orderNo`,	`prodNo`,`itemPrice`,`itemDiscount`,`itemCount`)
-VALUES('22010310001',	'130101',	56000,	0,	2);
-INSERT INTO `OrderItems`(`orderNo`,	`prodNo`,`itemPrice`,`itemDiscount`,`itemCount`)
-VALUES('22010210010',	'110101',	76000,	5,	1);
-INSERT INTO `OrderItems`(`orderNo`,	`prodNo`,`itemPrice`,`itemDiscount`,`itemCount`)
-VALUES('22010310100',	'160103',	120000,	0,	1);
-INSERT INTO `OrderItems`(`orderNo`,	`prodNo`,`itemPrice`,`itemDiscount`,`itemCount`)
-VALUES('22010410101',	'170115',	900000,	12,	1);
-INSERT INTO `OrderItems`(`orderNo`,	`prodNo`,`itemPrice`,`itemDiscount`,`itemCount`)
-VALUES('22010510021',	'110101',	76000,	5,	1);
-INSERT INTO `OrderItems`(`orderNo`,	`prodNo`,`itemPrice`,`itemDiscount`,`itemCount`)
-VALUES('22010510027',	'130101',	56000,	0,	2);
-INSERT INTO `OrderItems`(`orderNo`,	`prodNo`,`itemPrice`,`itemDiscount`,`itemCount`)
-VALUES('22010510021',	'100101',	25000,	20,	1);
-INSERT INTO `OrderItems`(`orderNo`,	`prodNo`,`itemPrice`,`itemDiscount`,`itemCount`)
-VALUES('22010510031',	'170115',	900000,	12,	1);
-INSERT INTO `OrderItems`(`orderNo`,	`prodNo`,`itemPrice`,`itemDiscount`,`itemCount`)
-VALUES('22010710110',	'120103',	21000,	10,	5)</string>
-		<string>#주문상품 상세
-
-INSERT INTO `OrderItems`(`orderNo`,	`prodNo`,`itemPrice`,`itemDiscount`,`itemCount`)
-VALUES('22010210001',	'100110',	38000,	15,	1)</string>
-		<string>#주문상품 상세
-
-INSERT INTO `OrderItems` VALUES('22010210001',	'100110',	38000,	15,	1)</string>
-		<string>INSERT INTO `Orders` VALUES('22010210002',	'user3',	56700,	'서울시 강남구 21-1',	1,	'2022-01-10 10:50:12');
-INSERT INTO `Orders` VALUES('22010210010',	'user4',	72200,	'서울시 강서구 큰대로 38',	2,	'2022-01-10 10:50:12');
-INSERT INTO `Orders` VALUES('22010310001',	'user5',	127000,	'경기도 광주시 초월로 21',	1,	'2022-01-10 10:50:12');
-INSERT INTO `Orders` VALUES('22010310100',	'user1',	120000,	'경기도 수원시 120번지',	0,	'2022-01-10 10:50:12');
-INSERT INTO `Orders` VALUES('22010410101',	'user6',	792000,	'부산시 남구 21-1',	2,	'2022-01-10 10:50:12');
-INSERT INTO `Orders` VALUES('22010510021',	'user7',	92200,	'부산시 부산진구 56 10층',	4,	'2022-01-10 10:50:12');
-INSERT INTO `Orders` VALUES('22010510027',	'user8',	112000,	'대구시 팔달로 19',	3,	'2022-01-10 10:50:12');
-INSERT INTO `Orders` VALUES('22010510031',	'user10',	792000,	'대전시 한밭로 24-1',	2,	'2022-01-10 10:50:12');
-INSERT INTO `Orders` VALUES('22010710110',	'user9',	94500,	'광주시 충열로 11',	1,	'2022-01-10 10:50:12')</string>
-		<string>#주문
-
-INSERT INTO `Orders` VALUES('22010210001',	'user2',	52300,	'서울시 마포구 121',	1,	'2022-01-10 10:50:12')</string>
-		<string>INSERT INTO `Products` (`prodNo`,`cateNo`,`sellerNo`,`prodName`,`prodPrice`,`prodStock`,`prodSold`,`prodDiscount`)
-VALUES(100110,	10,10004,'트레이닝 통바지',	1602,	38000,	398,	15);
-INSERT INTO `Products` (`prodNo`,`cateNo`,`sellerNo`,`prodName`,`prodPrice`,`prodStock`,`prodSold`,`prodDiscount`)
-VALUES(110101,	10,10003,'신상 여성운동화',	160,	76000,	40,	5);
-INSERT INTO `Products` (`prodNo`,`cateNo`,`sellerNo`,`prodName`,`prodPrice`,`prodSold`,`prodDiscount`)
-VALUES(120101,	12,10010,'암소 1등급 구이셋트 1.2kg',	150000,	87,	15);
-INSERT INTO `Products` (`prodNo`,`cateNo`,`sellerNo`,`prodName`,`prodPrice`,`prodSold`,`prodDiscount`)
-VALUES(120103,	12,10010,'바로구이 부채살 250g',	21000,	61,	10);
-INSERT INTO `Products` (`prodNo`,`cateNo`,`sellerNo`,`prodName`,`prodPrice`,`prodStock`,`prodSold`,`prodDiscount`)
-VALUES(130101,	13,10006,'[ANF] 식스프리 강아지 사료',	58,		56000,	142,	0);
-INSERT INTO `Products` (`prodNo`,`cateNo`,`sellerNo`,`prodName`,`prodPrice`,`prodStock`,`prodSold`,`prodDiscount`)
-VALUES(130112,	13,10006,'중대형 사계절 강아지옷',	120,	15000,	80,	0);
-INSERT INTO `Products` (`prodNo`,`cateNo`,`sellerNo`,`prodName`,`prodPrice`,`prodSold`,`prodDiscount`)
-VALUES(141001,	14,10001,'라떼 2인 소파/방수 패브릭',	320000,	42,	0);
-INSERT INTO `Products` (`prodNo`,`cateNo`,`sellerNo`,`prodName`,`prodPrice`,`prodStock`,`prodSold`,`prodDiscount`)
-VALUES(170115,	17,10007,'지포스 3080 그래픽카드',	28,	900000,	12,	12);
-INSERT INTO `Products` (`prodNo`,`cateNo`,`sellerNo`,`prodName`,`prodPrice`,`prodStock`,`prodSold`,`prodDiscount`)
-VALUES(160103,	16,10009,'치닝디핑 33BR 철봉',	32,	120000,	28,	0)</string>
-		<string>#상품
-INSERT INTO `Products` (`prodNo`,`cateNo`,`sellerNo`,`prodName`,`prodPrice`,`prodStock`,`prodSold`,`prodDiscount`)
-VALUES(100101,11,10003,'반팔티 L~2XL',	869,	25000,	132,	20)</string>
-		<string>#상품
-INSERT INTO `Products` (`prodNo`,`cateNo`,`sellerNo`,`prodName`,`prodPrice`,`prodStock`,`prodSold`,`prodDiscount`)
-VALUES(100101,11,1003,'반팔티 L~2XL',	869,	25000,	132,	20)</string>
-		<string>INSERT INTO `Categories` VALUES(10,'여성의류패션');
-INSERT INTO `Categories` VALUES(11,'남성의류패션');
-INSERT INTO `Categories` VALUES(12,'식품·생필품');
-INSERT INTO `Categories` VALUES(13,'취미·반려견');
-INSERT INTO `Categories` VALUES(14,'홈·문구');
-INSERT INTO `Categories` VALUES(15,'자동차·공구');
-INSERT INTO `Categories` VALUES(16,'스포츠·건강');
-INSERT INTO `Categories` VALUES(17,'컴퓨터·가전·디지털');
-INSERT INTO `Categories` VALUES(18,'여행');
-INSERT INTO `Categories` VALUES(19,'도서')</string>
-		<string>select * from sellers</string>
-		<string>INSERT INTO `Sellers` VALUES(10001, '(주)다팔아',	'02-201-1976',	'정우성',	'서울');
-INSERT INTO `Sellers` VALUES(10002, '판매의민족',	'02-102-1975',	'이정재',	'서울');
-INSERT INTO `Sellers` VALUES(10003, '멋남',	'031-103-1989',	'원빈',	'경기');
-INSERT INTO `Sellers` VALUES(10004, '스타일살아',	'032-201-1979',	'이나영',	'경기');
-INSERT INTO `Sellers` VALUES(10005, '(주)삼성전자',	'02-214-1966',	'장동건',	'서울');
-INSERT INTO `Sellers` VALUES(10006, '복실이옷짱',	'051-301-1979',	'고소영',	'부산');
-INSERT INTO `Sellers` VALUES(10007, '컴퓨존(주)',	'055-401-1984',	'유재석',	'대구');
-INSERT INTO `Sellers` VALUES(10008, '(주)LG전자',	'02-511-1965',	'강호동',	'서울');
-INSERT INTO `Sellers` VALUES(10009, '굿바디스포츠',	'070-6101-1972',	'조인성',	'부산');
-INSERT INTO `Sellers` VALUES(10010, '누리푸드',	'051-710-1992',	'강동원',	'부산')</string>
-		<string>#판매자 
-select * from sellers</string>
-		<string>INSERT INTO `Points`(`userId`,`point`,`pointDesc`,`pointDate`) 
-VALUES('user1',1000,'회원가입 1000 적립', '2022-01-10 10:50:12');
-INSERT INTO `Points`(`userId`,`point`,`pointDesc`,`pointDate`) 
-VALUES('user1',6000,'상품구매 5% 적립', '2022-01-10 10:50:12');
-INSERT INTO `Points`(`userId`,`point`,`pointDesc`,`pointDate`) 
-VALUES('user3',2835,'상품구매 5% 적립', '2022-01-10 10:50:12');
-INSERT INTO `Points`(`userId`,`point`,`pointDesc`,`pointDate`) 
-VALUES('user7',3610,'상품구매 5% 적립', '2022-01-10 10:50:12');
-INSERT INTO `Points`(`userId`,`point`,`pointDesc`,`pointDate`) 
-VALUES('user5',3000,'이벤트 응모 3000 적립', '2022-01-10 10:50:12');
-INSERT INTO `Points`(`userId`,`point`,`pointDesc`,`pointDate`) 
-VALUES('user2',1000,'회원가입 1000 적립', '2022-01-10 10:50:12');
-INSERT INTO `Points`(`userId`,`point`,`pointDesc`,`pointDate`) 
-VALUES('user2',2000,'이벤트 응모 2000 적립', '2022-01-10 10:50:12');
-INSERT INTO `Points`(`userId`,`point`,`pointDesc`,`pointDate`) 
-VALUES('user2',2615,'상품구매 5% 적립', '2022-01-10 10:50:12');
-INSERT INTO `Points`(`userId`,`point`,`pointDesc`,`pointDate`) 
-VALUES('user3',1500,'이벤트 응모 1500 적립', '2022-01-10 10:50:12');
-INSERT INTO `Points`(`userId`,`point`,`pointDesc`,`pointDate`) 
-VALUES('user6',15840,'상품구매 2% 적립', '2022-01-10 10:50:12')</string>
-		<string>INSERT INTO `Users`
-(`userId`,`userName`,`userBirth`,`userGender`,`userHp`,`userPoint`,`userLevel`,`userAddr`,`userRegDate`)
-VALUES
-('user2','계백',		'1975-06-11','M','010-1102-1975',	1000,	1,	'서울',	'2022-01-10 10:50:12');
-INSERT INTO `Users`
-(`userId`,`userName`,`userBirth`,`userGender`,`userHp`,`userPoint`,`userLevel`,`userAddr`,`userRegDate`)
-VALUES
-('user3','김춘추',	'1989-05-30','M','010-1103-1989',	1200,	2,	'서울',	'2022-01-10 10:50:12');
-INSERT INTO `Users`
-(`userId`,`userName`,`userBirth`,`userGender`,`userHp`,`userEmail`,`userPoint`,`userLevel`,`userAddr`,`userRegDate`)
-VALUES
-('user4','이사부',	'1979-04-13','M','010-2101-1979','leesabu@gmail.com',	2600,	1,	'서울',	'2022-01-10 10:50:12');
-INSERT INTO `Users`
-(`userId`,`userName`,`userBirth`,`userGender`,`userHp`,`userEmail`,`userPoint`,`userLevel`,`userAddr`,`userRegDate`)
-VALUES
-('user5','장보고',	'1966-09-12','M','010-2104-1966','jangbg@naver.com',	9400,	4,	'대전',	'2022-01-10 10:50:12');
-INSERT INTO `Users`
-(`userId`,`userName`,`userBirth`,`userGender`,`userHp`,`userEmail`,`userPoint`,`userLevel`,`userAddr`,`userRegDate`)
-VALUES
-('user6','선덕여왕',	'1979-07-28','M','010-3101-1979','gueen@naver.com',	1600,	2,	'대전',	'2022-01-10 10:50:12');
-INSERT INTO `Users`
-(`userId`,`userName`,`userBirth`,`userGender`,`userHp`,`userEmail`,`userPoint`,`userLevel`,`userAddr`,`userRegDate`)
-VALUES
-('user7','강감찬',	'1984-06-15','F','010-4101-1984','kang@daum.net',	800,	0,	'대구',	'2022-01-10 10:50:12');
-INSERT INTO `Users`
-(`userId`,`userName`,`userBirth`,`userGender`,`userHp`,`userEmail`,`userPoint`,`userLevel`,`userAddr`,`userRegDate`)
-VALUES
-('user8','신사임당',	'1965-10-21','M','010-5101-1965','sinsa@gmail.com',	1500,	1,	'대구',	'2022-01-10 10:50:12');
-INSERT INTO `Users`
-(`userId`,`userName`,`userBirth`,`userGender`,`userHp`,`userEmail`,`userPoint`,`userLevel`,`userAddr`,`userRegDate`)
-VALUES
-('user9','이이',		'1972-11-28','F','010-6101-1972','leelee@nate.com',	3400,	3,	'부산',	'2022-01-10 10:50:12');
-INSERT INTO `Users`
-(`userId`,`userName`,`userBirth`,`userGender`,`userHp`,`userPoint`,`userLevel`,`userAddr`,`userRegDate`)
-VALUES
-('user10','허난설헌',	'1992-09-07','F','010-7103-1992',	4100,	3,	'광주',	'2022-01-10 10:50:12')</string>
-		<string>#날짜 : 2023/06/29
-#이름 : 정채윤
-#내용 : Database 모델링 실습 3 Shopping
-
-INSERT INTO `Users`
-(`userId`,`userName`,`userBirth`,`userGender`,`userHp`,`userEmail`,`userPoint`,`userLevel`,`userAddr`,`userRegDate`)
-VALUES
-('user1','김유신',	'1976-01-21','M','010-1101-1976','kimys@naver.com',	0,	1,	'서울',	'2022-01-10 10:50:12')</string>
-		<string>select * from register</string>
-		<string>INSERT INTO `Register`(`stdNo`,`lecNo`,`proNo`) VALUES('20101001','101001','P10101');
-INSERT INTO `Register`(`stdNo`,`lecNo`,`proNo`) VALUES('20101001','101002','P10102');
-INSERT INTO `Register`(`stdNo`,`lecNo`,`proNo`) VALUES('20111013','111011','P11103');
-INSERT INTO `Register`(`stdNo`,`lecNo`,`proNo`) VALUES('21231002','231110','P23102');
-INSERT INTO `Register`(`stdNo`,`lecNo`,`proNo`) VALUES('22401001','401019','P40101');
-INSERT INTO `Register`(`stdNo`,`lecNo`,`proNo`) VALUES('22401001','421012','P42103');
-INSERT INTO `Register`(`stdNo`,`lecNo`,`proNo`) VALUES('20101001','101003','P10102');
-INSERT INTO `Register`(`stdNo`,`lecNo`,`proNo`) VALUES('22421003','311003','P31104');
-INSERT INTO `Register`(`stdNo`,`lecNo`,`proNo`) VALUES('22421003','421012','P42103');
-INSERT INTO `Register`(`stdNo`,`lecNo`,`proNo`) VALUES('20111013','111012','P11104')</string>
+		<string>select * from products</string>
+		<string>#문제6
+SELECT `prodNo`, `prodName`, `prodPrice`, `prodDiscount`, (`prodPrice`- (`prodPrice`*`prodDiscount`/100)) AS `할인가`
+FROM `Products`</string>
+		<string>ALTER TABLE products RENAME COLUMN `prodStock2` TO `prodPrice`</string>
+		<string>ALTER TABLE products RENAME COLUMN `prodPrice` TO `prodStock`</string>
+		<string>ALTER TABLE products RENAME COLUMN `prodStock` TO `prodStock2`</string>
+		<string>#문제6
+SELECT `prodNo`, `prodName`, `prodStock`, `prodDiscount`, (`prodStock`- (`prodStock`*`prodDiscount`/100)) AS `할인가`
+FROM `Products`</string>
+		<string>#문제6
+SELECT `prodNo`, `prodName`, `prodStock`, `prodDiscount`, (`prodPrice`- (`prodPrice`*`prodStock`/100)) AS `할인가`
+FROM `Products`</string>
+		<string>#문제6
+SELECT `prodNo`, `prodName`, `prodStock`, `prodDiscount`, (`prodPrice`- (`prodPrice`*`prodDiscount`/100))
+FROM `Products`</string>
+		<string>#문제6
+SELECT `prodNo`, `prodName`, `prodPrice`, `prodDiscount`, (`prodPrice`- (`prodPrice`*`prodDiscount`/100))
+FROM `Products`</string>
+		<string>#문제6
+SELECT *
+FROM `Products`</string>
+		<string>#문제5
+SELECT  c.`orderNo`,  GROUP_CONCAT(`prodName`)
+FROM `OrderItems` 	AS c 
+JOIN `Orders`		AS a ON a.orderNo = c.orderNo
+JOIN `Users`		AS b ON a.userId=b.userId
+JOIN `Products`		AS d ON c.prodNo = d.prodNo
+GROUP BY a.`orderNo`</string>
+		<string>#문제5
+SELECT  c.`orderNo`, a.`userId`, GROUP_CONCAT(`prodName`)
+FROM `OrderItems` 	AS c 
+JOIN `Orders`		AS a ON a.orderNo = c.orderNo
+JOIN `Users`		AS b ON a.userId=b.userId
+JOIN `Products`		AS d ON c.prodNo = d.prodNo
+GROUP BY a.`orderNo`</string>
+		<string>#문제5
+SELECT  c.`orderNo`, c.`userId`,GROUP_CONCAT(`prodName`)
+FROM `OrderItems` 	AS c 
+JOIN `Orders`		AS a ON a.orderNo = c.orderNo
+JOIN `Users`		AS b ON a.userId=b.userId
+JOIN `Products`		AS d ON c.prodNo = d.prodNo
+GROUP BY a.`orderNo`</string>
+		<string>#문제5
+SELECT  c.`orderNo`, GROUP_CONCAT(`prodName`)
+FROM `OrderItems` 	AS c 
+JOIN `Orders`		AS a ON a.orderNo = c.orderNo
+JOIN `Users`		AS b ON a.userId=b.userId
+JOIN `Products`		AS d ON c.prodNo = d.prodNo
+GROUP BY a.`orderNo`</string>
+		<string>#문제5
+SELECT  c.`orderNo`
+FROM `OrderItems` 	AS c 
+JOIN `Orders`		AS a ON a.orderNo = c.orderNo
+JOIN `Users`		AS b ON a.userId=b.userId
+JOIN `Products`		AS d ON c.prodNo = d.prodNo
+GROUP BY a.`orderNo`</string>
+		<string>#문제5
+SELECT  *
+FROM `OrderItems` 	AS c 
+JOIN `Orders`		AS a ON a.orderNo = c.orderNo
+JOIN `Users`		AS b ON a.userId=b.userId
+JOIN `Products`		AS d ON c.prodNo = d.prodNo
+GROUP BY a.`orderNo`</string>
+		<string>#문제5
+SELECT  *
+FROM `OrderItems` 	AS c 
+JOIN `Orders`		AS a ON a.orderNo = c.orderNo
+JOIN `Users`		AS b ON a.userId=b.userId
+JOIN `Products`		AS d ON c.prodNo = d.prodNo
+GROUP BY `orderNo`</string>
+		<string>#문제5
+SELECT c.`orderNo`,b.`userId`, `userName` FROM `OrderItems` 	AS c 
+JOIN `Orders`		AS a ON a.orderNo = c.orderNo
+JOIN `Users`		AS b ON a.userId=b.userId
+JOIN `Products`		AS d ON c.prodNo = d.prodNo
+GROUP BY `orderNo`</string>
+		<string>#문제5
+SELECT c.`orderNo`,b.`userId`, `userName`, GROUP_CONCAT(`prodName`),`orderDate`
+FROM `OrderItems` 	AS c 
+JOIN `Orders`		AS a ON a.orderNo = c.orderNo
+JOIN `Users`		AS b ON a.userId=b.userId
+JOIN `Products`		AS d ON c.prodNo = d.prodNo
+GROUP BY `orderNo`</string>
+		<string>#문제5
+SELECT c.`orderNo`,b.`userId`, `userName`,`orderDate`
+FROM `OrderItems` 	AS c 
+JOIN `Orders`		AS a ON a.orderNo = c.orderNo
+JOIN `Users`		AS b ON a.userId=b.userId
+JOIN `Products`		AS d ON c.prodNo = d.prodNo</string>
 	</array>
 	<key>rdbms_type</key>
 	<string>mysql</string>
