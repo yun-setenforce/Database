@@ -316,7 +316,7 @@ JOIN `Users` USING(`userId`)
 WHERE `orderTotalPrice` &gt;=100000
 ORDER BY `orderTotalPrice` DESC, `userName`;
 
-#문제5
+#문제5 # b.`userId`,`userName`,     `orderDate`
 SELECT  c.`orderNo`,  GROUP_CONCAT(`prodName`)
 FROM `OrderItems` 	AS c 
 JOIN `Orders`		AS a ON a.orderNo = c.orderNo
@@ -332,7 +332,13 @@ select * from products;
 ALTER TABLE products RENAME COLUMN `prodStock` TO `prodStock2`;
 ALTER TABLE products RENAME COLUMN `prodPrice` TO `prodStock`;
 ALTER TABLE products RENAME COLUMN `prodStock2` TO `prodPrice`;
-</string>
+
+
+#문제7
+SELECT a.`prodNo`, `prodName`, `prodPrice`,`prodStock`, `sellerManager`
+FROM `Products` AS a
+JOIN `Sellers` AS b ON a.`sellerNo`=b.sellerNo
+WHere `sellerManager`='고소영';</string>
 			<key>table</key>
 			<string>products</string>
 			<key>view</key>
@@ -349,6 +355,18 @@ ALTER TABLE products RENAME COLUMN `prodStock2` TO `prodPrice`;
 	<array/>
 	<key>queryHistory</key>
 	<array>
+		<string>#문제7
+SELECT a.`prodNo`, `prodName`, `prodPrice`,`prodStock`, `sellerManager`
+FROM `Products` AS a
+JOIN `Sellers` AS b ON a.`sellerNo`=b.sellerNo</string>
+		<string>#문제7
+SELECT a.`prodNo`, `prodName`, `prodPrice`,`prodStock`, `sellerManager`
+FROM `Products` AS a
+LEFT JOIN `Sellers` AS b ON a.`sellerNo`=b.sellerNo</string>
+		<string>#문제7
+SELECT a.`prodNo`, `prodName`, `prodPrice`,`prodStock`, `sellerName`
+FROM `Products` AS a
+JOIN `Sellers` AS b ON a.`sellerNo`=b.sellerNo</string>
 		<string>select * from products</string>
 		<string>#문제6
 SELECT `prodNo`, `prodName`, `prodPrice`, `prodDiscount`, (`prodPrice`- (`prodPrice`*`prodDiscount`/100)) AS `할인가`
@@ -420,25 +438,6 @@ JOIN `Orders`		AS a ON a.orderNo = c.orderNo
 JOIN `Users`		AS b ON a.userId=b.userId
 JOIN `Products`		AS d ON c.prodNo = d.prodNo
 GROUP BY `orderNo`</string>
-		<string>#문제5
-SELECT c.`orderNo`,b.`userId`, `userName` FROM `OrderItems` 	AS c 
-JOIN `Orders`		AS a ON a.orderNo = c.orderNo
-JOIN `Users`		AS b ON a.userId=b.userId
-JOIN `Products`		AS d ON c.prodNo = d.prodNo
-GROUP BY `orderNo`</string>
-		<string>#문제5
-SELECT c.`orderNo`,b.`userId`, `userName`, GROUP_CONCAT(`prodName`),`orderDate`
-FROM `OrderItems` 	AS c 
-JOIN `Orders`		AS a ON a.orderNo = c.orderNo
-JOIN `Users`		AS b ON a.userId=b.userId
-JOIN `Products`		AS d ON c.prodNo = d.prodNo
-GROUP BY `orderNo`</string>
-		<string>#문제5
-SELECT c.`orderNo`,b.`userId`, `userName`,`orderDate`
-FROM `OrderItems` 	AS c 
-JOIN `Orders`		AS a ON a.orderNo = c.orderNo
-JOIN `Users`		AS b ON a.userId=b.userId
-JOIN `Products`		AS d ON c.prodNo = d.prodNo</string>
 	</array>
 	<key>rdbms_type</key>
 	<string>mysql</string>
