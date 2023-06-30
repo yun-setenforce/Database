@@ -316,8 +316,8 @@ JOIN `Users` USING(`userId`)
 WHERE `orderTotalPrice` &gt;=100000
 ORDER BY `orderTotalPrice` DESC, `userName`;
 
-#문제5 # b.`userId`,`userName`,     `orderDate`
-SELECT  c.`orderNo`,  GROUP_CONCAT(`prodName`)
+#문제5 #   
+SELECT  c.`orderNo`, ANY_VALUE(b.`userId`), ANY_VALUE(`userName`),   GROUP_CONCAT(`prodName` SEPARATOR ','), ANY_VALUE(`orderDate`)
 FROM `OrderItems` 	AS c 
 JOIN `Orders`		AS a ON a.orderNo = c.orderNo
 JOIN `Users`		AS b ON a.userId=b.userId
@@ -325,7 +325,7 @@ JOIN `Products`		AS d ON c.prodNo = d.prodNo
 GROUP BY a.`orderNo`;
 
 #문제6
-SELECT `prodNo`, `prodName`, `prodPrice`, `prodDiscount`, (`prodPrice`- (`prodPrice`*`prodDiscount`/100)) AS `할인가`
+SELECT `prodNo`, `prodName`, `prodPrice`, `prodDiscount`, FLOOR((`prodPrice`- (`prodPrice`*`prodDiscount`/100))) AS `할인가`
 FROM `Products`;
 
 select * from products;
@@ -351,10 +351,23 @@ WHERE `prodNo` IS NULL;
 SELECT `itemPrice`, `itemCount`,  (`itemPrice`- (`itemPrice`*`itemDiscount`/100))*`itemCount`  AS `최종 총합`
 FROM `OrderItems`;
 
-SELECT `orderNo`, (`itemPrice`* (1 - `itemDiscount`/100))*`itemCount`  AS `최종총합`
+SELECT `orderNo`, SUM(floor((`itemPrice`* (1 - `itemDiscount`/100))*`itemCount`))  AS `최종총합`
 FROM `OrderItems`
 GROUP BY `orderNo`
 HAVING `최종총합` &gt;=100000
+ORDER BY `최종총합` DESC;
+
+
+SELECT 
+	`orderNo`,
+	SUM(`할인가`) AS `최종총합`
+FROM 
+(
+SELECT * , floor((`itemPrice`* (1 - `itemDiscount`/100))*`itemCount`) AS `할인가`
+FROM `OrderItems`
+) AS a
+GROUP BY `orderNo`
+HAVING `최종총합` &gt;= 100000
 ORDER BY `최종총합` DESC;
 
 #문제 10
@@ -387,38 +400,40 @@ JOIN `Orders` AS b ON a.`orderNo`=b.`orderNo`
 JOIN `Users` AS c ON b.`userId`=c.`userId`
 JOIN `Products` AS d ON a.`prodNo`=d.`prodNo`
 WHERE `userName`='장보고'</string>
-		<string>#문제 10
-SELECT `userName`
-FROM `OrderItems` AS a
-JOIN `Orders` AS b ON a.`orderNo`=b.`orderNo`
-JOIN `Users` AS c ON b.`userId`=c.`userId`
-JOIN `Products` AS d ON a.`prodNo`=d.`prodNo`
-WHERE `userName`='장보고'</string>
-		<string>#문제 10
-SELECT `userName`
-FROM `OrderItems` AS a
-JOIN `Orders` AS b ON a.`orderNo`=b.`orderNo`
-JOIN `Users` AS c ON b.`userId`=c.`userId`
-JOIN `Products` AS d ON a.`prodNo`=b.`prodNo`
-WHERE `userName`='장보고'</string>
-		<string>#문제 10
-SELECT `userName`
-FROM `OrderItems` AS a
-JOIN `Orders` AS b ON a.`orderNo`=b.`orderNo`
-JOIN `Users` AS c ON b.`userId`=c.`userId`
-JOIN `Products` AS d ON a.`proNo`=b.`proNo`
-WHERE `userName`='장보고'</string>
-		<string>#문제 10
-SELECT * 
-FROM `OrderItems` AS a
-JOIN `Orders` AS b ON a.`orderNo`=b.`orderNo`
-JOIN `Users` AS c ON b.`userId`=c.`userId`
-WHERE `userName`='장보고'</string>
-		<string>#문제 10
-SELECT * 
-FROM `OrderItems` AS a
-JOIN `Orders` AS b ON a.`orderNo`=b.`orderNo`
-JOIN `Users` AS c ON b.`userId`=c.`userId`</string>
+		<string>SELECT 
+	`orderNo`,
+	SUM(`할인가`) AS `최종총합`
+FROM 
+(
+SELECT * , floor((`itemPrice`* (1 - `itemDiscount`/100))*`itemCount`) AS `할인가`
+FROM `OrderItems`
+) AS a
+GROUP BY `orderNo`
+HAVING `최종총합` &gt;= 100000
+ORDER BY `최종총합` DESC</string>
+		<string>SELECT 
+	`orderNo`,
+	SUM(`할인가`) AS `최종총합`
+FROM 
+(
+SELECT * , floor((`itemPrice`* (1 - `itemDiscount`/100))*`itemCount`) AS `할인가`
+FROM `OrderItems`
+) AS a
+GROUP BY `orderNo`</string>
+		<string>SELECT 
+	`orderNo`,
+	SUM(`할인가`) AS `최종총합`
+FROM 
+(
+SELECT * , floor((`itemPrice`* (1 - `itemDiscount`/100))*`itemCount`) AS `할인가`
+FROM `OrderItemas`
+) AS a
+GROUP BY `orderNo`</string>
+		<string>SELECT `orderNo`, SUM(floor((`itemPrice`* (1 - `itemDiscount`/100))*`itemCount`))  AS `최종총합`
+FROM `OrderItems`
+GROUP BY `orderNo`
+HAVING `최종총합` &gt;=100000
+ORDER BY `최종총합` DESC</string>
 		<string>SELECT `orderNo`, SUM((`itemPrice`* (1 - `itemDiscount`/100))*`itemCount`)  AS `최종총합`
 FROM `OrderItems`
 GROUP BY `orderNo`
@@ -426,53 +441,67 @@ HAVING `최종총합` &gt;=100000
 ORDER BY `최종총합` DESC</string>
 		<string>SELECT `orderNo`, (`itemPrice`* (1 - `itemDiscount`/100))*`itemCount`  AS `최종총합`
 FROM `OrderItems`
-HAVING `최종총합` &gt;=100000
-ORDER BY `최종총합` DESC</string>
-		<string>SELECT `orderNo`, (`itemPrice`* (1 - `itemDiscount`/100))*`itemCount`  AS `최종총합`
-FROM `OrderItems`
 GROUP BY `orderNo`
 HAVING `최종총합` &gt;=100000
 ORDER BY `최종총합` DESC</string>
-		<string>SELECT `orderNo`,SUM(`itemPrice`)
-FROM `OrderItems`
-GROUP BY `orderNo`
-HAVING `최종총합` &gt;=100000
-ORDER BY `최종총합` DESC</string>
-		<string>SELECT `orderNo`,SUM(`orderPrice`)
-FROM `itemPrice`
-GROUP BY `orderNo`
-HAVING `최종총합` &gt;=100000
-ORDER BY `최종총합` DESC</string>
-		<string>SELECT `orderNo`,SUM(`orderPrice`)
-FROM `OrderItems`
-GROUP BY `orderNo`
-HAVING `최종총합` &gt;=100000
-ORDER BY `최종총합` DESC</string>
-		<string>#문제9
-SELECT `itemPrice`, `itemCount`,  (`itemPrice`- (`itemPrice`*`itemDiscount`/100))*`itemCount`  AS `최종 총합`
-FROM `OrderItems`</string>
-		<string>SELECT `orderNo`, (`itemPrice`* (1  *`itemDiscount`))*`itemCount`  AS `최종총합`
-FROM `OrderItems`
-HAVING `최종총합` &gt;=100000
-ORDER BY `최종총합` DESC</string>
-		<string>SELECT `orderNo`, (`itemPrice`* (1 - *`itemDiscount`))*`itemCount`  AS `최종총합`
-FROM `OrderItems`
-HAVING `최종총합` &gt;=100000
-ORDER BY `최종총합` DESC</string>
-		<string>SELECT `orderNo`, (`itemPrice`* (1 - `itemPrice`*`itemDiscount`))*`itemCount`  AS `최종총합`
-FROM `OrderItems`
-HAVING `최종총합` &gt;=100000
-ORDER BY `최종총합` DESC</string>
-		<string>itemPrice</string>
-		<string>SELECT `orderNo`, (`itemPrice`- (`itemPrice`*`itemDiscount`/100))*`itemCount`  AS `최종총합`
-FROM `OrderItems`
-HAVING `최종총합` &gt;=100000
-ORDER BY `최종총합` DESC</string>
-		<string>최종총합`</string>
-		<string>LECT `orderNo`, (`itemPrice`- (`itemPrice`*`itemDiscount`/100))*`itemCount`  AS `최종총합`
-FROM `OrderItems`
-HAVING `최종총합` &gt;=100000
-ORDER BY `최종총합` DES</string>
+		<string>#문제8
+SELECT a.`sellerNo`, `sellerBizName`, `sellerManager`, `sellerPhone`
+FROM `Sellers` AS a
+LEFT JOIN `Products` AS b ON a.`sellerNo`=b.`sellerNo`
+WHERE `prodNo` IS NULL</string>
+		<string>#문제6
+SELECT `prodNo`, `prodName`, `prodPrice`, `prodDiscount`, FLOOR((`prodPrice`- (`prodPrice`*`prodDiscount`/100))) AS `할인가`
+FROM `Products`</string>
+		<string>#문제6
+SELECT `prodNo`, `prodName`, `prodPrice`, `prodDiscount`, FLOOR((`prodPrice`- (`prodPrice`*`prodDiscount`/100))) AS `할인가`</string>
+		<string>#문제6
+SELECT `prodNo`, `prodName`, `prodPrice`, `prodDiscount`, FLOOR((`prodPrice`- (`prodPrice`*`prodDiscount`/100)) AS `할인가`
+FROM `Products`</string>
+		<string>#문제6
+SELECT `prodNo`, `prodName`, `prodPrice`, `prodDiscount`, FLOOR((`prodPrice`- (`prodPrice`*`prodDiscount`/100))() AS `할인가`
+FROM `Products`</string>
+		<string>#문제6
+SELECT `prodNo`, `prodName`, `prodPrice`, `prodDiscount`, FLOOR((`prodPrice`- (`prodPrice`*`prodDiscount`/100)()) AS `할인가`
+FROM `Products`</string>
+		<string>#문제6
+SELECT `prodNo`, `prodName`, `prodPrice`, `prodDiscount`, (`prodPrice`- (`prodPrice`*`prodDiscount`/100)) AS `할인가`
+FROM `Products`</string>
+		<string>ALTER TABLE products RENAME COLUMN `prodPrice` TO `prodStock`</string>
+		<string>#문제5 #   
+SELECT  c.`orderNo`, ANY_VALUE(b.`userId`), ANY_VALUE(`userName`),   GROUP_CONCAT(`prodName` SEPARATOR ','), ANY_VALUE(`orderDate`)
+FROM `OrderItems` 	AS c 
+JOIN `Orders`		AS a ON a.orderNo = c.orderNo
+JOIN `Users`		AS b ON a.userId=b.userId
+JOIN `Products`		AS d ON c.prodNo = d.prodNo
+GROUP BY a.`orderNo`</string>
+		<string>#문제5 #   
+SELECT  c.`orderNo`, ANY_VALUE(b.`userId`), ANY_VALUE(`userName`),   GROUP_CONCAT(`prodName` SEPERATOR ','), ANY_VALUE(`orderDate`)
+FROM `OrderItems` 	AS c 
+JOIN `Orders`		AS a ON a.orderNo = c.orderNo
+JOIN `Users`		AS b ON a.userId=b.userId
+JOIN `Products`		AS d ON c.prodNo = d.prodNo
+GROUP BY a.`orderNo`</string>
+		<string>#문제5 #   
+SELECT  c.`orderNo`, ANY_VALUE(b.`userId`), ANY_VALUE(`userName`),   GROUP_CONCAT(`prodName`), ANY_VALUE(`orderDate`)
+FROM `OrderItems` 	AS c 
+JOIN `Orders`		AS a ON a.orderNo = c.orderNo
+JOIN `Users`		AS b ON a.userId=b.userId
+JOIN `Products`		AS d ON c.prodNo = d.prodNo
+GROUP BY a.`orderNo`</string>
+		<string>#문제5 #   
+SELECT  c.`orderNo`, ANY_VALUE(b.`userId`,), ANY_VALUE(`userName`),   GROUP_CONCAT(`prodName`), ANY_VALUE(`orderDate`)
+FROM `OrderItems` 	AS c 
+JOIN `Orders`		AS a ON a.orderNo = c.orderNo
+JOIN `Users`		AS b ON a.userId=b.userId
+JOIN `Products`		AS d ON c.prodNo = d.prodNo
+GROUP BY a.`orderNo`</string>
+		<string>#문제5 # b.`userId`,  
+SELECT  c.`orderNo`,  ANY_VALUE(`userName`),   GROUP_CONCAT(`prodName`), ANY_VALUE(`orderDate`)
+FROM `OrderItems` 	AS c 
+JOIN `Orders`		AS a ON a.orderNo = c.orderNo
+JOIN `Users`		AS b ON a.userId=b.userId
+JOIN `Products`		AS d ON c.prodNo = d.prodNo
+GROUP BY a.`orderNo`</string>
 	</array>
 	<key>rdbms_type</key>
 	<string>mysql</string>
